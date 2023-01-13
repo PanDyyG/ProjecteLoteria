@@ -17,8 +17,16 @@ public class ProjecteLoteria {
      */
     public static void main(String[] args) {
         System.out.print("Introduce tu número de la loteria: ");
-        int numLoteria = scan.nextInt();
-       
+        int numLoteria = 0;
+        int resultat = LlargadaNum(numLoteria);
+    }
+    public static int LlargadaNum (int num){
+        num = scan.nextInt();
+        num = String.valueOf(num).length();
+        while (num != 5){
+           num = scan.nextInt();
+        }
+        return num;
     }
     
 }
