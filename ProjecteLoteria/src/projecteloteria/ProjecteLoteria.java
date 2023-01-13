@@ -10,13 +10,15 @@ import java.util.Scanner;
  * @author ausias
  */
 public class ProjecteLoteria {
+    public static Scanner scan = new Scanner(System.in);
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
-        //Segunda prueba
+        System.out.print("Introduce tu número de la loteria: ");
+        int numLoteria = scan.nextInt();
+       
     }
     
 }
