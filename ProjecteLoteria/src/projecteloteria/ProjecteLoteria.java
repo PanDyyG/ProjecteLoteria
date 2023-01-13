@@ -3,7 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
 package projecteloteria;
-
+import java.util.Random;
+import java.util.Scanner;
 /**
  *
  * @author ausias
