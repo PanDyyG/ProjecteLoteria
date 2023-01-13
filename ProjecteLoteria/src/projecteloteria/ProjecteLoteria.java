@@ -15,7 +15,7 @@ public class ProjecteLoteria {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        //Prueba
+        //Segunda prueba
     }
     
 }
