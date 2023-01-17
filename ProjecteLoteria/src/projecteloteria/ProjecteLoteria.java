@@ -16,18 +16,45 @@ public class ProjecteLoteria {
     public static Scanner scan = new Scanner(System.in);
 
     public static void main(String[] args) {
-        //int numLoteria = validarEntero("Introduce tu número de la loteria: ");
+        final int PREMI1= 4000000;
+        final int PREMI2= 1250000;
+        final int PREMI3= 500000;
+        final int PREMI4= 200000;
+        final int PREMI5= 60000;
+        final int PEDRE= 1000;
+        
+        
+        int premiAconseguit= 0;
+        int numLoteria = validarEntero("Introdueix el teu número de la loteria: ");
         int premi1 = premiGordo();
         int premi2 = segonPremi();
         int premi3 = tercerPremi();
-        final int PEDREA = 1794;
-        int pedrea[] = new int[PEDREA];
         
+        /*final int DOSPREMIS = 2;
+        int premi4[] = new int [DOSPREMIS];
         
+        int premi5;
         
-        System.out.println(premi1);
-        System.out.println(premi2);
-        System.out.println(premi3);
+        final int PEDREA = 1794; 
+        int pedrea[] = new int[PEDREA];*/
+        
+        if (numLoteria == premi1) {
+            premiAconseguit += PREMI1;
+        }
+        else if (numLoteria == premi2){
+            premiAconseguit += PREMI2;
+        }
+        else if (numLoteria == premi3){
+            premiAconseguit += PREMI3;
+        }
+       
+        
+        System.out.println("El número introduit " + numLoteria + " té el següent premi: " + premiAconseguit);
+        System.out.println("Primer Premi:" + premi1);
+        System.out.println("Segon Premi: "+ premi2);
+        System.out.println("Tercer Premi: " + premi3);
+        System.out.println("Quart Premi: ");
+        System.out.println("Cinque Premi: ");
     }
 
     /*public static int LlargadaNum (int num){
@@ -68,7 +95,7 @@ public class ProjecteLoteria {
         return aleatori;
     }
     
-    public static int Pedrea(int[] pedrea) {
+    public static int Pedrea(int pedrea[]) {
         for (int i = 0; i < pedrea.length; i++) {
 
             pedrea[i] = (int) (Math.random() * 99999 + 1);
