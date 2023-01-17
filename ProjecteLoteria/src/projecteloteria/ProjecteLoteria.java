@@ -12,9 +12,6 @@ import java.util.Scanner;
 public class ProjecteLoteria {
     public static Scanner scan = new Scanner(System.in);
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         int numLoteria = validarEntero("Introduce tu número de la loteria: ");
         int resultat = LlargadaNum(numLoteria);
