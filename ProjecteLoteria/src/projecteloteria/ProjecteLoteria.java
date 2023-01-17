@@ -16,8 +16,7 @@ public class ProjecteLoteria {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.out.print("Introduce tu número de la loteria: ");
-        int numLoteria = 0;
+        int numLoteria = validarEntero("Introduce tu número de la loteria: ");
         int resultat = LlargadaNum(numLoteria);
     }
     public static int LlargadaNum (int num){
@@ -27,6 +26,17 @@ public class ProjecteLoteria {
            num = scan.nextInt();
         }
         return num;
+    }
+    static int validarEntero(String mensaje){
+        Scanner scan = new Scanner(System.in);
+        int valor;
+        System.out.println(mensaje);
+        while (!scan.hasNextInt()) {
+            scan.next();
+            System.out.println("El bolete es un número. Intentalo de nuevo");
+        }
+        valor = scan.nextInt();
+        return valor;
     }
     
 }
