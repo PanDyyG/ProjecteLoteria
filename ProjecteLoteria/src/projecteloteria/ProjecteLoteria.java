@@ -86,7 +86,7 @@ public class ProjecteLoteria {
         int aleatori = rnd.nextInt(00001 + 99999);
         return aleatori;
     }
-    
+    //pedrea 1794 premis
     public static int Pedrea(int pedrea[]) {
         for (int i = 0; i < pedrea.length; i++) {
 
