@@ -16,8 +16,7 @@ public class ProjecteLoteria {
         final int PEDRE= 1000;*/
 
         int[] NumerosPremiados = NumeroLoteria();
-        //int premiAconseguit= 0;
-        int numLoteria = validarEntero("Introdueix el teu número de la loteria: ");
+      
         boolean exit = false;
         while (!exit) {
             System.out.println("-----------Menú d'opcions-----------");
@@ -27,10 +26,29 @@ public class ProjecteLoteria {
             int opciones = scan.nextInt();
             switch (opciones) {
                 case 1:
-                    System.out.println("Introdueix el teu número: ");
-                    int NumeroConsultar = scan.nextInt();
+                    int NumeroConsultar = validarEntero("Introdueix el teu número de la loteria: ");
                     int posicion = ValidarNumero(NumerosPremiados, NumeroConsultar);
-                    
+                    if (posicion >= 1) {
+                        System.out.println("Enhorabona, el bolet està premiat!!");
+                        System.out.println("Vols saber el seu premi?");
+                        System.out.println("1. Si");
+                        System.out.println("2. No");
+                        int premi = scan.nextInt();
+                        boolean sortir = false;
+                        while (!sortir) {
+                            switch (premi) {
+                                case 2:
+                                    int premiAconseguit= 0;
+                                    break;
+                                case 3:
+                                    sortir = true;
+                                    break;
+                            }
+                        }
+                    }
+                    else{
+                        System.out.println("El teu bolet no està premiat");
+                    }
                     break;
                 case 2:
 
@@ -41,7 +59,11 @@ public class ProjecteLoteria {
             }
         }
     }
-
+    /**
+     * 
+     * @param mensaje
+     * @return 
+     */
     static int validarEntero(String mensaje) {
         Scanner scan = new Scanner(System.in);
         int valor;
