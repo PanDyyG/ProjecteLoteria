@@ -28,6 +28,7 @@ public class ProjecteLoteria {
                 case 1:
                     int NumeroConsultar = validarEntero("Introdueix el teu número de la loteria: ");
                     int posicion = ValidarNumero(NumerosPremiados, NumeroConsultar);
+                    int premiAconseguit= Premi(posicion);
                     if (posicion >= 1) {
                         System.out.println("Enhorabona, el bolet està premiat!!");
                         System.out.println("Vols saber el seu premi?");
@@ -38,7 +39,7 @@ public class ProjecteLoteria {
                         while (!sortir) {
                             switch (premi) {
                                 case 2:
-                                    int premiAconseguit= 0;
+                                    System.out.println(premiAconseguit);
                                     break;
                                 case 3:
                                     sortir = true;
@@ -97,6 +98,34 @@ public class ProjecteLoteria {
             }
         }
         return -1;
+    }
+    /**
+     * 
+     * @param posicion
+     * @return Retorna el premi corresponent
+     */
+    static int Premi (int posicion) {
+        int premi= 0; 
+        
+        if(posicion == 0){
+            premi = 4000000;
+        }
+        else if (posicion == 1){
+            premi = 1250000;
+        }
+        else if (posicion == 2){
+            premi = 500000;
+        }
+        else if (posicion>=3 && posicion <=5){
+            premi = 200000;
+        }
+        else if (posicion >= 6 && posicion <= 14){
+            premi = 60000;
+        }
+        else if (posicion >14){
+            premi = 1000;
+        }
+        return premi;
     }
 }
     /*int premi1 = premiGordo();
