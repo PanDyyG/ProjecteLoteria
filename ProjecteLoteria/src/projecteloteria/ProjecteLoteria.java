@@ -8,8 +8,11 @@ public class ProjecteLoteria {
     public static Scanner scan = new Scanner(System.in);
 
     public static void main(String[] args) {
-
         int[] NumerosPremiados = NumeroLoteria();
+        for (int i = 0; i < NumerosPremiados.length; i++) {
+            System.out.println(NumerosPremiados[i]);
+        }
+        
 
         boolean exit = false;
         while (!exit) {
@@ -22,9 +25,10 @@ public class ProjecteLoteria {
                 case 1:
                     int NumeroConsultar = validarEntero("Introdueix el teu número de la loteria: ");
                     int posicion = ValidarNumero(NumerosPremiados, NumeroConsultar);
-                    int premiAconseguit = Premi(posicion);
+                    int reintegro = Reintegro(NumeroConsultar, NumerosPremiados, posicion);
+                    int premiAconseguit = Premi(posicion, reintegro);
                     String Text = TextGuanyador(premiAconseguit, NumeroConsultar);
-                    if (posicion >= 0) {
+                    if (premiAconseguit >= 0) {
                         System.out.println("Enhorabona, el bolet està premiat!!");
                         System.out.println("Vols saber el seu premi?");
                         System.out.println("1. Si");
@@ -34,7 +38,12 @@ public class ProjecteLoteria {
                         while (!sortir) {
                             switch (premi) {
                                 case 1:
-                                    System.out.println(Text);
+                                    if (posicion >= 0){
+                                      System.out.println(Text);  
+                                    }
+                                    else {
+                                        System.out.println("Premi adicional: " + premiAconseguit);
+                                    }
                                     sortir = true;
                                     break;
                                 case 2:
@@ -102,29 +111,30 @@ public class ProjecteLoteria {
      * @param posicion
      * @return Retorna el premi corresponent
      */
-    static int Premi(int posicion) {
+    static int Premi(int posicion, int reintegro) {
         int premi = 0;
 
         if (posicion == 0) {
-            premi = 4000000;
+            premi = 4000000 + reintegro;
         } else if (posicion == 1) {
-            premi = 1250000;
+            premi = 1250000 + reintegro;
         } else if (posicion == 2) {
-            premi = 500000;
+            premi = 500000 + reintegro;
         } else if (posicion >= 3 && posicion <= 5) {
-            premi = 200000;
+            premi = 200000 + reintegro;
         } else if (posicion >= 6 && posicion <= 12) {
-            premi = 60000;
+            premi = 60000 + reintegro;
         } else if (posicion > 12) {
-            premi = 1000;
+            premi = 1000 + reintegro;
         }
         return premi;
     }
+
     /**
-     * 
-     * @param premi 
+     *
+     * @param premi
      * @param NumeroConsultar
-     * @return 
+     * @return
      */
     static String TextGuanyador(int premi, int NumeroConsultar) {
 
@@ -145,24 +155,16 @@ public class ProjecteLoteria {
         }
         return textGuanyador;
     }
+
     /*Per premis adicionals. Pillar numeroconsultar i l'array de NumAleatoris, 
     passar el num del array en aquell moment a string i el num consulta tmb. Llavors 
     donar-li la volta com un ex que vam fer, i compararla a base de caracters.*/
     
-    /*static int reintegro(){
-       
-        for(int i= 0; i <array.length;i++){
-            
-            for(int j= 0; j< boleto.length;j++){
-                
-                if(array[i+4] = boleto[j+4])
-        
-                    premi + 20;
-             }
+    static int Reintegro(int numeroConsultar, int[] NumerosPremiados, int posicion) {
+        int reintegro = 0;
+        if (NumerosPremiados[0] % 10 == numeroConsultar % 10) {
+            reintegro = 20;
         }
-                
-    }*/
-    
-    
+        return reintegro;
+    }
 }
-    
