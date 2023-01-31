@@ -120,7 +120,12 @@ public class ProjecteLoteria {
         }
         return premi;
     }
-
+    /**
+     * 
+     * @param premi 
+     * @param NumeroConsultar
+     * @return 
+     */
     static String TextGuanyador(int premi, int NumeroConsultar) {
 
         String textGuanyador = "";
