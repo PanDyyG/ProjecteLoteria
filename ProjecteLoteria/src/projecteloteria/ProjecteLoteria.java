@@ -145,4 +145,24 @@ public class ProjecteLoteria {
         }
         return textGuanyador;
     }
+    /*Per premis adicionals. Pillar numeroconsultar i l'array de NumAleatoris, 
+    passar el num del array en aquell moment a string i el num consulta tmb. Llavors 
+    donar-li la volta com un ex que vam fer, i compararla a base de caracters.*/
+    
+    /*static int reintegro(){
+       
+        for(int i= 0; i <array.length;i++){
+            
+            for(int j= 0; j< boleto.length;j++){
+                
+                if(array[i+4] = boleto[j+4])
+        
+                    premi + 20;
+             }
+        }
+                
+    }*/
+    
+    
 }
+    
