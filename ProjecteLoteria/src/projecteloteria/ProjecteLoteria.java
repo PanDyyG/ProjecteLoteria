@@ -16,7 +16,7 @@ public class ProjecteLoteria {
         final int PEDRE= 1000;*/
 
         int[] NumerosPremiados = NumeroLoteria();
-      
+
         boolean exit = false;
         while (!exit) {
             System.out.println("-----------Menú d'opcions-----------");
@@ -28,8 +28,8 @@ public class ProjecteLoteria {
                 case 1:
                     int NumeroConsultar = validarEntero("Introdueix el teu número de la loteria: ");
                     int posicion = ValidarNumero(NumerosPremiados, NumeroConsultar);
-                    int premiAconseguit= Premi(posicion);
-                    if (posicion >= 1) {
+                    int premiAconseguit = Premi(posicion);
+                    if (posicion >= 0) {
                         System.out.println("Enhorabona, el bolet està premiat!!");
                         System.out.println("Vols saber el seu premi?");
                         System.out.println("1. Si");
@@ -38,16 +38,16 @@ public class ProjecteLoteria {
                         boolean sortir = false;
                         while (!sortir) {
                             switch (premi) {
-                                case 2:
-                                    System.out.println(premiAconseguit);
+                                case 1:
+                                    System.out.println("El teu premi és" + premiAconseguit);
+                                    sortir = true;
                                     break;
-                                case 3:
+                                case 2:
                                     sortir = true;
                                     break;
                             }
                         }
-                    }
-                    else{
+                    } else {
                         System.out.println("El teu bolet no està premiat");
                     }
                     break;
@@ -60,10 +60,11 @@ public class ProjecteLoteria {
             }
         }
     }
+
     /**
-     * 
+     *
      * @param mensaje
-     * @return 
+     * @return
      */
     static int validarEntero(String mensaje) {
         Scanner scan = new Scanner(System.in);
@@ -76,6 +77,7 @@ public class ProjecteLoteria {
         valor = scan.nextInt();
         return valor;
     }
+
     static int[] NumeroLoteria() {
         int numeros[] = new int[1807];
 
@@ -99,36 +101,32 @@ public class ProjecteLoteria {
         }
         return -1;
     }
+
     /**
-     * 
+     *
      * @param posicion
      * @return Retorna el premi corresponent
      */
-    static int Premi (int posicion) {
-        int premi= 0; 
-        
-        if(posicion == 0){
+    static int Premi(int posicion) {
+        int premi = 0;
+
+        if (posicion == 0) {
             premi = 4000000;
-        }
-        else if (posicion == 1){
+        } else if (posicion == 1) {
             premi = 1250000;
-        }
-        else if (posicion == 2){
+        } else if (posicion == 2) {
             premi = 500000;
-        }
-        else if (posicion>=3 && posicion <=5){
+        } else if (posicion >= 3 && posicion <= 5) {
             premi = 200000;
-        }
-        else if (posicion >= 6 && posicion <= 14){
+        } else if (posicion >= 6 && posicion <= 14) {
             premi = 60000;
-        }
-        else if (posicion >14){
+        } else if (posicion > 14) {
             premi = 1000;
         }
         return premi;
     }
 }
-    /*int premi1 = premiGordo();
+/*int premi1 = premiGordo();
         int premi2 = segonPremi();
         int premi3 = tercerPremi();*/
 
@@ -139,7 +137,7 @@ public class ProjecteLoteria {
         
         final int PEDREA = 1794; 
         int pedrea[] = new int[PEDREA];
-     */
+ */
  /*
         System.out.println("El número introduit " + numLoteria + " té el següent premi: " + premiAconseguit);
         System.out.println("Primer Premi:" + premi1);
@@ -147,7 +145,7 @@ public class ProjecteLoteria {
         System.out.println("Tercer Premi: " + premi3);
         System.out.println("Quart Premi: ");
         System.out.println("Cinque Premi: ");
-     */
+ */
 
  /*
     public static int LlargadaNum(int num) {
@@ -158,7 +156,7 @@ public class ProjecteLoteria {
         }
         return num;
     }
-     */
+ */
  /*static int premiGordo() {
         Random rnd = new Random();
         int aleatori = rnd.nextInt(00001 + 99999);
@@ -176,13 +174,12 @@ public class ProjecteLoteria {
         int aleatori = rnd.nextInt(00001 + 99999);
         return aleatori;
     }*/
-    //pedrea 1794 premis
-    /*public static int Pedrea(int pedrea[]) {
+//pedrea 1794 premis
+/*public static int Pedrea(int pedrea[]) {
         for (int i = 0; i < pedrea.length; i++) {
 
             pedrea[i] = (int) (Math.random() * 99999 + 1);
         }
         return 0;
     }
-     */
-
+ */
