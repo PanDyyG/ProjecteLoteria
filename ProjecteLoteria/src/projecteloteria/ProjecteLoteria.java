@@ -9,10 +9,11 @@ public class ProjecteLoteria {
 
     public static void main(String[] args) {
         int[] NumerosPremiados = NumeroLoteria();
-        for (int i = 0; i < NumerosPremiados.length; i++) {
-            System.out.println(NumerosPremiados[i]);
-        }
 
+        /*for (int i = 0; i < NumerosPremiados.length; i++) {
+            System.out.println(NumerosPremiados[i]);
+        }*/
+        
         boolean exit = false;
         while (!exit) {
             System.out.println("-----------Menú d'opcions-----------");
@@ -24,9 +25,11 @@ public class ProjecteLoteria {
                 case 1:
                     int NumeroConsultar = validarEntero("Introdueix el teu número de la loteria: ");
                     int posicion = ValidarNumero(NumerosPremiados, NumeroConsultar);
+
                     int reintegro = Reintegro(NumeroConsultar, NumerosPremiados, posicion);
-                    int premiAconseguit = Premi(posicion, reintegro);
+                    int premiAconseguit = Premi(posicion);
                     String Text = TextGuanyador(premiAconseguit, NumeroConsultar);
+                    int[] ArrayPremiAdicional = PremisAdicionals(reintegro);
                     if (premiAconseguit >= 0) {
                         System.out.println("Enhorabona, el bolet està premiat!!");
                         System.out.println("Vols saber el seu premi?");
@@ -109,21 +112,21 @@ public class ProjecteLoteria {
      * @param posicion
      * @return Retorna el premi corresponent
      */
-    static int Premi(int posicion, int reintegro) {
+    static int Premi(int posicion) {
         int premi = 0;
 
         if (posicion == 0) {
-            premi = 4000000 + reintegro;
+            premi = 4000000;
         } else if (posicion == 1) {
-            premi = 1250000 + reintegro;
+            premi = 1250000 ;
         } else if (posicion == 2) {
-            premi = 500000 + reintegro;
+            premi = 500000;
         } else if (posicion >= 3 && posicion <= 5) {
-            premi = 200000 + reintegro;
+            premi = 200000 ;
         } else if (posicion >= 6 && posicion <= 12) {
-            premi = 60000 + reintegro;
+            premi = 60000 ;
         } else if (posicion > 12) {
-            premi = 1000 + reintegro;
+            premi = 1000 ;
         }
         return premi;
     }
@@ -154,6 +157,26 @@ public class ProjecteLoteria {
         return textGuanyador;
     }
 
+    static int[] PremisAdicionals(int Reintegro/*int antIPost, int */) {
+        int numeros[] = new int[5];
+
+        for (int i = 0; i < numeros.length; i++) {
+            if (i == 0) {
+                numeros[i] = Reintegro;
+            } else if (i == 1) {
+
+            } else if (i == 2) {
+
+            } else if (i == 3) {
+
+            } else if (i == 4) {
+
+            }
+            
+        }
+        return numeros;
+    }
+
     /*Per premis adicionals. Pillar numeroconsultar i l'array de NumAleatoris, 
     passar el num del array en aquell moment a string i el num consulta tmb. Llavors 
     donar-li la volta com un ex que vam fer, i compararla a base de caracters.*/
@@ -166,7 +189,7 @@ public class ProjecteLoteria {
     }
 
     //Prototip Per comprovar numerosPremiats (anterior i posterior), del 1r, 2n, 3r Premi.
-    static int antIPost(int numeroConsultar, int[] NumerosPremiados) {
+    static int numAntIpost(int numeroConsultar, int[] NumerosPremiados) {
         int PremisAddicionals = 0;
 
         if (NumerosPremiados[0] - 1 == numeroConsultar || NumerosPremiados[0] + 1 == numeroConsultar) {
@@ -175,14 +198,18 @@ public class ProjecteLoteria {
             PremisAddicionals = 12500;
         } else if (NumerosPremiados[2] - 1 == numeroConsultar || NumerosPremiados[2] + 1 == numeroConsultar) {
             PremisAddicionals = 9600;
-
         }
 
         return PremisAddicionals;
     }
 
-    //Prototip Per comprovar premis d'ultims dos digits, del 1r, 2n, 3r Premi.
-    static int UltimasDos(int numeroConsultar, int[] NumerosPremiados) {
+    /**
+     * 
+     * @param Número per teclat
+     * @param Els números premiats
+     * @return Retornar si 
+     */
+    static int UltimasDosCifras(int numeroConsultar, int[] NumerosPremiados) {
         int PremisAddicionals = 0;
 
         if (NumerosPremiados[0] % 100 == numeroConsultar % 100) {
@@ -192,7 +219,6 @@ public class ProjecteLoteria {
         } else if (NumerosPremiados[2] % 100 == numeroConsultar % 100) {
             PremisAddicionals = 1000;
         }
-
         return PremisAddicionals;
     }
 
