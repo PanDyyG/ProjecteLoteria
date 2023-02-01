@@ -12,7 +12,6 @@ public class ProjecteLoteria {
         for (int i = 0; i < NumerosPremiados.length; i++) {
             System.out.println(NumerosPremiados[i]);
         }
-        
 
         boolean exit = false;
         while (!exit) {
@@ -38,10 +37,9 @@ public class ProjecteLoteria {
                         while (!sortir) {
                             switch (premi) {
                                 case 1:
-                                    if (posicion >= 0){
-                                      System.out.println(Text);  
-                                    }
-                                    else {
+                                    if (posicion >= 0) {
+                                        System.out.println(Text);
+                                    } else {
                                         System.out.println("Premi adicional: " + premiAconseguit);
                                     }
                                     sortir = true;
@@ -159,7 +157,6 @@ public class ProjecteLoteria {
     /*Per premis adicionals. Pillar numeroconsultar i l'array de NumAleatoris, 
     passar el num del array en aquell moment a string i el num consulta tmb. Llavors 
     donar-li la volta com un ex que vam fer, i compararla a base de caracters.*/
-    
     static int Reintegro(int numeroConsultar, int[] NumerosPremiados, int posicion) {
         int reintegro = 0;
         if (NumerosPremiados[0] % 10 == numeroConsultar % 10) {
@@ -167,4 +164,36 @@ public class ProjecteLoteria {
         }
         return reintegro;
     }
+
+    //Prototip Per comprovar numerosPremiats (anterior i posterior), del 1r, 2n, 3r Premi.
+    static int antIPost(int numeroConsultar, int[] NumerosPremiados) {
+        int PremisAddicionals = 0;
+
+        if (NumerosPremiados[0] - 1 == numeroConsultar || NumerosPremiados[0] + 1 == numeroConsultar) {
+            PremisAddicionals = 20000;
+        } else if (NumerosPremiados[1] - 1 == numeroConsultar || NumerosPremiados[1] + 1 == numeroConsultar) {
+            PremisAddicionals = 12500;
+        } else if (NumerosPremiados[2] - 1 == numeroConsultar || NumerosPremiados[2] + 1 == numeroConsultar) {
+            PremisAddicionals = 9600;
+
+        }
+
+        return PremisAddicionals;
+    }
+
+    //Prototip Per comprovar premis d'ultims dos digits, del 1r, 2n, 3r Premi.
+    static int UltimasDos(int numeroConsultar, int[] NumerosPremiados) {
+        int PremisAddicionals = 0;
+
+        if (NumerosPremiados[0] % 100 == numeroConsultar % 100) {
+            PremisAddicionals = 1000;
+        } else if (NumerosPremiados[1] % 100 == numeroConsultar % 100) {
+            PremisAddicionals = 1000;
+        } else if (NumerosPremiados[2] % 100 == numeroConsultar % 100) {
+            PremisAddicionals = 1000;
+        }
+
+        return PremisAddicionals;
+    }
+
 }
