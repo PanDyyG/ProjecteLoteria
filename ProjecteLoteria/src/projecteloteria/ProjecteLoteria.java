@@ -10,10 +10,10 @@ public class ProjecteLoteria {
     public static void main(String[] args) {
         int[] NumerosPremiados = NumeroLoteria();
 
-        /*for (int i = 0; i < NumerosPremiados.length; i++) {
-            System.out.println(NumerosPremiados[i]);
-        }*/
-        
+        //for (int i = 0; i < NumerosPremiados.length; i++) {
+        //    System.out.println(NumerosPremiados[i]);
+        //}
+
         boolean exit = false;
         while (!exit) {
             System.out.println("-----------Menú d'opcions-----------");
@@ -109,7 +109,7 @@ public class ProjecteLoteria {
 
     /**
      *
-     * @param posicion
+     * @param posicion, la posicio correspon al premi
      * @return Retorna el premi corresponent
      */
     static int Premi(int posicion) {
@@ -118,23 +118,23 @@ public class ProjecteLoteria {
         if (posicion == 0) {
             premi = 4000000;
         } else if (posicion == 1) {
-            premi = 1250000 ;
+            premi = 1250000;
         } else if (posicion == 2) {
             premi = 500000;
         } else if (posicion >= 3 && posicion <= 5) {
-            premi = 200000 ;
+            premi = 200000;
         } else if (posicion >= 6 && posicion <= 12) {
-            premi = 60000 ;
+            premi = 60000;
         } else if (posicion > 12) {
-            premi = 1000 ;
+            premi = 1000;
         }
         return premi;
     }
 
     /**
      *
-     * @param premi
-     * @param NumeroConsultar
+     * @param premi, es el valor del premi
+     * @param NumeroConsultar, es el numero introduit per teclat  a consultar
      * @return
      */
     static String TextGuanyador(int premi, int NumeroConsultar) {
@@ -156,7 +156,11 @@ public class ProjecteLoteria {
         }
         return textGuanyador;
     }
-
+/**
+ * 
+ * @param Reintegro
+ * @return 
+ */
     static int[] PremisAdicionals(int Reintegro/*int antIPost, int */) {
         int numeros[] = new int[5];
 
@@ -172,14 +176,18 @@ public class ProjecteLoteria {
             } else if (i == 4) {
 
             }
-            
+
         }
         return numeros;
     }
-
-    /*Per premis adicionals. Pillar numeroconsultar i l'array de NumAleatoris, 
-    passar el num del array en aquell moment a string i el num consulta tmb. Llavors 
-    donar-li la volta com un ex que vam fer, i compararla a base de caracters.*/
+/**
+ * 
+ * @param numeroConsultar, es el numero introduit per teclat  a consultar
+ * @param NumerosPremiados, es el numero premiat que surt del sorteig
+ * @param posicion, la posicio correspon al premi
+ * @return  retorna el valor del reintegro
+ */
+    
     static int Reintegro(int numeroConsultar, int[] NumerosPremiados, int posicion) {
         int reintegro = 0;
         if (NumerosPremiados[0] % 10 == numeroConsultar % 10) {
@@ -187,8 +195,13 @@ public class ProjecteLoteria {
         }
         return reintegro;
     }
-
-    //Prototip Per comprovar numerosPremiats (anterior i posterior), del 1r, 2n, 3r Premi.
+/**
+ * 
+ * @param numeroConsultar, es el numero introduit per teclat  a consultar
+ * @param NumerosPremiados, es el numero premiat que surt del sorteig
+ * @return retorna el premi  corresponent al numero anterior  i posterior
+ */
+  
     static int numAntIpost(int numeroConsultar, int[] NumerosPremiados) {
         int PremisAddicionals = 0;
 
@@ -205,9 +218,9 @@ public class ProjecteLoteria {
 
     /**
      * 
-     * @param Número per teclat
-     * @param Els números premiats
-     * @return Retornar si 
+     * @param numeroConsultar, es el numero introduit per teclat  a consultar
+     * @param NumerosPremiados, es el numero premiat que surt del sorteig
+     * @return retorna el premi corresponent a les 2 ultimes  xifres
      */
     static int UltimasDosCifras(int numeroConsultar, int[] NumerosPremiados) {
         int PremisAddicionals = 0;
@@ -222,4 +235,26 @@ public class ProjecteLoteria {
         return PremisAddicionals;
     }
 
+    /**
+     *
+     * @param numeroConsultar, es el numero introduit per teclat  a consultar
+     * @param NumerosPremiados, es el numero premiat que surt del sorteig
+     * @return retorna premi corresponent a les centenas
+     */
+    static int centenas(int numeroConsultar, int[] NumerosPremiados) {
+        int PremisAddicionals = 0;
+
+        if (NumerosPremiados[0] / 100 == numeroConsultar / 100) {
+            PremisAddicionals = 100;
+        } else if (NumerosPremiados[1] / 100 == numeroConsultar / 100) {
+            PremisAddicionals = 100;
+        } else if (NumerosPremiados[2] / 100 == numeroConsultar / 100) {
+            PremisAddicionals = 100;
+        } else if (NumerosPremiados[3] / 100 == numeroConsultar / 100) {
+            PremisAddicionals = 100;
+        } else if (NumerosPremiados[4] / 100 == numeroConsultar / 100) {
+            PremisAddicionals = 100;
+        }
+        return PremisAddicionals;
+    }
 }
