@@ -1,5 +1,6 @@
 package projecteloteria;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -88,22 +89,33 @@ public class ProjecteLoteria {
         return valor;
     }
 
-    static int[] NumeroLoteria() {
-        final int PREMIOSBOMBO = 1807;
-
-        int numeros[] = new int[PREMIOSBOMBO];
-
-        for (int i = 0; i < numeros.length; i++) {
-            numeros[i] = GenerarNumero();
-        }
-        return numeros;
-    }
-
-    static int GenerarNumero() {
+    public static void GenRandNum(int[] array) {
+        int numeros;
         Random rnd = new Random();
-        int aleatori = rnd.nextInt(00001 + 99999);
-        return aleatori;
+        for (int i = 0; i < array.length;) {
+            //Generador de numeros
+            numeros = rnd.nextInt(00001 + 99999);
+
+            //Comprova repeticions
+            if (comprovaRep(array, numeros, i)) {
+                array[i] = numeros;
+                i++;
+            }
+        }
+
     }
+
+    static boolean comprovaRep(int[] array, int comprovaRep, int pos) {
+        boolean resultat = false;
+        for (int i = 0; i <= pos; i++) {
+            if (Arrays.stream(array).noneMatch(p -> p == comprovaRep)) {
+                resultat = true;
+            }
+        }
+        return resultat;
+    }
+
+    
 
     static int ValidarNumero(int[] NumeroPremiados, int NumeroConsultar) {
         for (int i = 0; i < NumeroPremiados.length; i++) {
