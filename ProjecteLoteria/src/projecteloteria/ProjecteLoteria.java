@@ -163,34 +163,45 @@ public class ProjecteLoteria {
      * @param NumeroConsultar, es el numero introduit per teclat a consultar
      * @return
      */
-    static String TextGuanyador(int premi, int NumeroConsultar, int PremiAdicional) {
+    static int PremiAdicional(int[] TotalPremisAdicionals) {
+        int premi = 0;
+        for (int totalPremisAdicional : TotalPremisAdicionals) {
+            if (totalPremisAdicional > premi) {
+                premi = totalPremisAdicional;
+            }
+        }
+
+        return premi;
+    }
+static void TextGuanyador(int premi, int BoletoInput, int PremiAdicional, int[] ArrayPremiAdicional) {
         final int PREMIO_1 = 4000000;
         final int PREMIO_2 = 1250000;
         final int PREMIO_3 = 500000;
         final int PREMIO_4 = 200000;
         final int PREMIO_5 = 60000;
         final int PEDREA = 1000;
-        String textGuanyador = "";
+        
+        System.out.println();
+        System.out.print("Felicitats! Has guanyat ");
+
         if (premi == PREMIO_1) {
-            textGuanyador = "Felicitats! Has guanyat primer premi, un total de: "
-                    + premi + " amb el decim: " + NumeroConsultar + " premi adicional: " + PremiAdicional;
+            System.out.print("El primer premi ");
         } else if (premi == PREMIO_2) {
-            textGuanyador = "Felicitats! Has guanyat el segon premi, un total de: " + premi + " amb el decim: " + NumeroConsultar
-                    + " premi adicional: " + PremiAdicional;
+            System.out.print("El segon premi ");
         } else if (premi == PREMIO_3) {
-            textGuanyador = "Felicitats! Has guanyat el tercer premi, un total de: " + premi + " amb el decim: " + NumeroConsultar
-                    + " premi adicional: " + PremiAdicional;
+            System.out.print("El tercer premi ");
         } else if (premi == PREMIO_4) {
-            textGuanyador = "Felicitats! Has guanyat el quart quart, un total de: " + premi + " amb el decim: " + NumeroConsultar
-                    + " premi adicional: " + PremiAdicional;
+            System.out.print("El quart premi ");
         } else if (premi == PREMIO_5) {
-            textGuanyador = "Felicitats! Has guanyat el cinque premi, un total de: " + premi + " amb el decim: " + NumeroConsultar
-                    + " premi adicional: " + PremiAdicional;
+            System.out.print("El cinque premi ");
         } else if (premi == PEDREA) {
-            textGuanyador = "Felicitats! Has guanyat la pedrea, un total de: " + premi + " amb el decim: " + NumeroConsultar
-                    + " premi adicional: " + PremiAdicional;
+            System.out.print("La pedrea ");
         }
-        return textGuanyador;
+        System.out.print(", un total de: " + premi + "€ amb el decim: " + BoletoInput);
+        if (PremiAdicional > 0 && premi == 0) {
+            System.out.println(" i un premi adicional de : " + PremiAdicional + "€");
+            PrintProvenenciaPremisAdicionals(ArrayPremiAdicional);
+        }
     }
 
     static int[] TotalPremisAdicionals(int Reintegro, int NumAntIpost, int UltimasDosCifras, int Centenas) {
@@ -210,11 +221,11 @@ public class ProjecteLoteria {
         return numeros;
     }
 
-    static int PremiAdicional(int[] TotalPremisAdicionals) {
+    static int PremiAddicional(int[] TotalPremisAdicionals) {
         int premi = 0;
-        for (int i = 0; i < TotalPremisAdicionals.length; i++) {
-            if (TotalPremisAdicionals[i] > premi) {
-                premi = TotalPremisAdicionals[i];
+        for (int totalPremisAdicional : TotalPremisAdicionals) {
+            if (totalPremisAdicional > premi) {
+                premi = totalPremisAdicional;
             }
         }
 
