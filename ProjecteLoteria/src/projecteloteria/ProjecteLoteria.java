@@ -313,5 +313,34 @@ static void TextGuanyador(int premi, int BoletoInput, int PremiAdicional, int[] 
         }
         return PremisAddicionals;
     }
-    
+    /**
+     * Funcio que imprimeix els premis adicionals
+     * @param ArrayPremisADD que compleixi una condició més gran i igual perquè imprimeixi el resultat.
+     */
+    public static void PrintProvenenciaPremisAdicionals(int[] ArrayPremisADD) {
+
+        System.out.println();
+
+        if (ArrayPremisADD[0] > 0) {
+            System.out.println("Has rebut " + ArrayPremisADD[0] + "€ de el Reintegro");
+        }
+        if (ArrayPremisADD[1] > 0) {
+            System.out.print("Has rebut " + ArrayPremisADD[1] + "€ de el Numero anterior o posterior al ");
+
+            if (ArrayPremisADD[1] == 20000) {
+                System.out.println("primer premi.");
+            } else if (ArrayPremisADD[1] == 12500) {
+                System.out.println("segon premi.");
+            } else if (ArrayPremisADD[1] == 9600) {
+                System.out.println("tercer premi.");
+            }
+        }
+        if (ArrayPremisADD[2] > 0) {
+            System.out.println("Has rebut " + ArrayPremisADD[2] + "€ de el Centena de un dels primers 4 premis");
+        }
+        if (ArrayPremisADD[3] > 0) {
+            System.out.println("Has rebut " + ArrayPremisADD[3] + "��� de el Ultimes dues xifres d'un dels primers 3 premis");
+        }
+
+    }
 }
