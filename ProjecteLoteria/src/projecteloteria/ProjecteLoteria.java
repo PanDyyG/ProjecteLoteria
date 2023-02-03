@@ -308,7 +308,7 @@ public class ProjecteLoteria {
     static int Reintegro(int numeroConsultar, int[] NumerosPremiados) {
         int reintegro = 0;
         if (NumerosPremiados[0] % 10 == numeroConsultar % 10) {
-            reintegro = 200;
+            reintegro = 20;
         }
         return reintegro;
     }
@@ -322,11 +322,11 @@ public class ProjecteLoteria {
         int PremisAddicionals = 0;
 
         if (NumerosPremiados[0] - 1 == numeroConsultar || NumerosPremiados[0] + 1 == numeroConsultar) {
-            PremisAddicionals = 20000;
+            PremisAddicionals = 2000;
         } else if (NumerosPremiados[1] - 1 == numeroConsultar || NumerosPremiados[1] + 1 == numeroConsultar) {
-            PremisAddicionals = 12500;
+            PremisAddicionals = 1250;
         } else if (NumerosPremiados[2] - 1 == numeroConsultar || NumerosPremiados[2] + 1 == numeroConsultar) {
-            PremisAddicionals = 9600;
+            PremisAddicionals = 960;
         }
         return PremisAddicionals;
     }
@@ -339,11 +339,11 @@ public class ProjecteLoteria {
     static int UltimasDosCifras(int numeroConsultar, int[] NumerosPremiados) {
         int PremisAddicionals = 0;
         if (NumerosPremiados[0] % 100 == numeroConsultar % 100) {
-            PremisAddicionals = 1000;
+            PremisAddicionals = 100;
         } else if (NumerosPremiados[1] % 100 == numeroConsultar % 100) {
-            PremisAddicionals = 1000;
+            PremisAddicionals = 100;
         } else if (NumerosPremiados[2] % 100 == numeroConsultar % 100) {
-            PremisAddicionals = 1000;
+            PremisAddicionals = 100;
         }
         return PremisAddicionals;
     }
@@ -357,15 +357,15 @@ public class ProjecteLoteria {
         int PremisAddicionals = 0;
 
         if (NumerosPremiados[0] / 100 == numeroConsultar / 100) {
-            PremisAddicionals = 1000;
+            PremisAddicionals = 100;
         } else if (NumerosPremiados[1] / 100 == numeroConsultar / 100) {
-            PremisAddicionals = 1000;
+            PremisAddicionals = 100;
         } else if (NumerosPremiados[2] / 100 == numeroConsultar / 100) {
-            PremisAddicionals = 1000;
+            PremisAddicionals = 100;
         } else if (NumerosPremiados[3] / 100 == numeroConsultar / 100) {
-            PremisAddicionals = 1000;
+            PremisAddicionals = 100;
         } else if (NumerosPremiados[4] / 100 == numeroConsultar / 100) {
-            PremisAddicionals = 1000;
+            PremisAddicionals = 100;
         }
         return PremisAddicionals;
     }
