@@ -256,28 +256,28 @@ public class ProjecteLoteria {
         System.out.println();
         System.out.print("Felicitats! T'ha tocat");
 
-        int premiDecim = 0;
-
+        int premiDecim=0;
+        
         if (premi == 4000000) {
-            premiDecim = 328000;
+            premiDecim=328000;
             System.out.print(" el primer premi");
         } else if (premi == 1250000) {
-            premiDecim = 108000;
+            premiDecim=108000;
             System.out.print("el segon premi");
         } else if (premi == 500000) {
-            premiDecim = 108000;
+            premiDecim=48000;
             System.out.print("el tercer premi");
         } else if (premi == 200000) {
-            premiDecim = 108000;
+            premiDecim=20000;
             System.out.print("el quart premi");
         } else if (premi == 60000) {
-            premiDecim = 108000;
+            premiDecim=6000;
             System.out.print("el cinque premi");
         } else if (premi == 1000) {
-            premiDecim = 108000;
+            premiDecim=100;
             System.out.print("la pedrea ");
         }
-        System.out.print(", El numero " + BoletoInput + " ha sigut premiat amb un total de: " + premi + " per serie i has guanyat " + premiDecim);
+        System.out.print(", El numero " + BoletoInput+ " ha sigut premiat amb un total de: " + premi + " per serie i has guanyat " +premiDecim);
         if (PremiAdicional > 0 && premi == 0) {
             System.out.println(" i un premi adicional de : " + PremiAdicional + "€");
             imprimeixPremisAddicionals(ArrayPremiAdicional);
