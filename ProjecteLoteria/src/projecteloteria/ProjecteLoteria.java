@@ -6,14 +6,24 @@ import java.util.Scanner;
 
 public class ProjecteLoteria {
 
+    public static final int TOTALPREMIS = 1807;
+
+    //Declaració scanner
     public static Scanner scan = new Scanner(System.in);
 
+    //MAIN
     public static void main(String[] args) {
-        int[] NumerosPremiados = NumeroLoteria();
+
+        //Dec array numerosPremiats
+        int[] NumerosPremiados = new int[TOTALPREMIS];
+
+        GenRandNum(NumerosPremiados);
 
         for (int i = 0; i < NumerosPremiados.length; i++) {
             System.out.println(NumerosPremiados[i]);
         }
+
+        //MAIN MENU
         boolean exit = false;
         while (!exit) {
             System.out.println("-----------Menú d'opcions-----------");
@@ -22,65 +32,114 @@ public class ProjecteLoteria {
             System.out.println("3. Sortir del menú");
             int opciones = scan.nextInt();
             switch (opciones) {
-                case 1:
-                    int NumeroConsultar = validarEntero("Introdueix el teu número de la loteria: ");
-                    int posicion = ValidarNumero(NumerosPremiados, NumeroConsultar);
+                //CONSULTAR NUMERO
+                case 1: {
 
-                    int reintegro = Reintegro(NumeroConsultar, NumerosPremiados);
-                    int numAntIpost = NumAntIpost(NumeroConsultar, NumerosPremiados);
-                    int ultimasDosCifras = UltimasDosCifras(NumeroConsultar, NumerosPremiados);
-                    int centenas = Centenas(NumeroConsultar, NumerosPremiados);
+                    //Introducció de numero de Boleto
+                    int BoletoInput = validarEntero();
 
-                    int[] ArrayPremiAdicional = TotalPremisAdicionals(reintegro, numAntIpost, ultimasDosCifras, centenas);
-                    int premiAdicional = PremiAdicional(ArrayPremiAdicional);
-                    int premiAconseguit = Premi(posicion);
-                    int decimPremiat = premiAdicional;
-                    String Text = TextGuanyador(premiAconseguit, NumeroConsultar, premiAdicional);
+                    //retorna la posicio on es troba el boleto introdiut en cas de que tingui un premi directe
+                    int posicio = ValidarNumero(NumerosPremiados, BoletoInput);
 
-                    if (posicion >= 0) {
-                        System.out.println("Enhorabona, el bolet està premiat!!");
-                        System.out.println("Vols saber el seu premi?");
-                        System.out.println("1. Si");
-                        System.out.println("2. No");
-                        int premi = scan.nextInt();
-                        boolean sortir = false;
-                        while (!sortir) {
-                            switch (premi) {
-                                case 1:
-                                    System.out.println(Text);
-                                    sortir = true;
-                                    break;
-                                case 2:
-                                    sortir = true;
-                                    break;
+                    //en cas de coincidir el ultim digit del boleto amb el ultim digit del primer premi
+                    //retorna valor de premi
+                    int reintegro = Reintegro(BoletoInput, NumerosPremiados);
+
+                    //Comprovació si el numero Input es anterior o posterior a alguns dels 3 primers premis
+                    //retorna valor de premi
+                    int numAntIpost = NumAntIpost(BoletoInput, NumerosPremiados);
+
+                    //Comprovació si el numero Input coindiceix amb els ultims 2 digits de algun dels 3 primers premis
+                    //Retorna valor de premi
+                    int ultimasDosCifras = UltimasDosCifras(BoletoInput, NumerosPremiados);
+
+                    //Comprovació si el numero Input coindiceix amb els ultims 3 digits d'algun dels 4 primers premis
+                    //Retorna valor de premi
+                    int centenas = Centenas(BoletoInput, NumerosPremiados);
+
+                    //guarda quins premis'han rebut
+                    int[] ArrayPremiAdicional = arrayAproximacions(reintegro, numAntIpost, ultimasDosCifras, centenas);
+
+                    //retorna la suma de els premis adicionals aun array
+                    int premiAddicional = PremiAdicional(ArrayPremiAdicional);
+
+                    //Retorna valor de premi en euros
+                    int premiAconseguit = Premi(posicio);
+
+                    if (premiAconseguit >= 0) {
+
+                        ///Menu de premi de bolet
+                        if (posicio >= 0) {
+                            System.out.println("Enhorabona, el bolet està premiat!!");
+                            System.out.println("Vols saber el seu premi?");
+                            System.out.println("1. Si");
+                            System.out.println("2. No");
+                            int premi = scan.nextInt();
+
+                            boolean sortir = false;
+                            while (!sortir) {
+                                switch (premi) {
+                                    case 1: {
+                                        TextGuanyador(premiAconseguit, BoletoInput, premiAddicional, ArrayPremiAdicional);
+                                        sortir = true;
+                                         break;
+                                    }
+                                    case 2:
+                                        sortir = true;
+                                         break;
+                                }
+                            }
+         
+
+                        } else {
+                            //Cas de rebre premis adicionals i no rebre cap premi gran ni pedrea
+                            System.out.println("El teu bolet no està premiat");
+                            if (premiAddicional > 0 && posicio == -1) {
+                                System.out.println("Però tens una part premiada: " + premiAddicional);
+                                PrintProvenenciaPremisAdicionals(ArrayPremiAdicional);
+
                             }
                         }
-                    } else {
-                        System.out.println("El teu bolet no està premiat");
-                        if (premiAconseguit > 0 && posicion == -1) {
-                            System.out.println("Però tens una part premiada: " + premiAdicional);
-                        }
-                    }
-                    break;
-                case 2:
+                          break;
 
-                    break;
-                case 3:
-                    exit = true;
-                    break;
+                    }
+                   
+                }
+             
+                case 2: {
+                    //Print de numeros Premiats
+                    for (int i = 0; i < NumerosPremiados.length; i++) {
+                        String LeftZeroCorr = String.format("%05d", NumerosPremiados[i]);
+
+                        System.out.println("Numero de boleto: " + LeftZeroCorr + " Premi: " + Premi(i) + "€");
+
+                    }
+                }
+                break;
+
+                case 3: {
+                }
+            }
+            int menuSortida;
+            System.out.println();
+            System.out.println("Vols rebre mes informacio sobre el sorteig de nadal?");
+            System.out.println("1.Si");
+            System.out.println("2.No");
+            menuSortida = scan.nextInt();
+            if (menuSortida == 2) {
+                exit = true;
+                break;
             }
         }
     }
 
     /**
-     *
-     * @param mensaje
-     * @return
+     * @return valor
      */
-    static int validarEntero(String mensaje) {
+    static int validarEntero() {
         Scanner scan = new Scanner(System.in);
         int valor;
-        System.out.println(mensaje);
+        System.out.println("Introdueix el teu número de la loteria: ");
         while (!scan.hasNextInt()) {
             scan.next();
             System.out.println("El boleto es un número. Intenta-ho de nou");
@@ -101,6 +160,7 @@ public class ProjecteLoteria {
                 array[i] = numeros;
                 i++;
             }
+
         }
 
     }
@@ -112,14 +172,12 @@ public class ProjecteLoteria {
                 resultat = true;
             }
         }
-        return resultat;
-    }
+        return resultat;
+    }
 
-    
-
-    static int ValidarNumero(int[] NumeroPremiados, int NumeroConsultar) {
+    static int ValidarNumero(int[] NumeroPremiados, int BoletoInput) {
         for (int i = 0; i < NumeroPremiados.length; i++) {
-            if (NumeroPremiados[i] == NumeroConsultar) {
+            if (NumeroPremiados[i] == BoletoInput) {
                 return i;
             }
         }
@@ -127,41 +185,59 @@ public class ProjecteLoteria {
     }
 
     /**
-     *
      * @param posicion, la posicio correspon al premi
      * @return Retorna el premi corresponent
      */
     static int Premi(int posicion) {
-
-        final int PREMIO_1 = 4000000;
-        final int PREMIO_2 = 1250000;
-        final int PREMIO_3 = 500000;
-        final int PREMIO_4 = 200000;
-        final int PREMIO_5 = 60000;
-        final int PEDREA = 1000;
         int premi = 0;
-
         if (posicion == 0) {
-            premi = PREMIO_1;
+            premi = 4000000;
         } else if (posicion == 1) {
-            premi = PREMIO_2;
+            premi = 1250000;
         } else if (posicion == 2) {
-            premi = PREMIO_3;
+            premi = 500000;
         } else if (posicion >= 3 && posicion <= 5) {
-            premi = PREMIO_4;
+            premi = 200000;
         } else if (posicion >= 6 && posicion <= 12) {
-            premi = PREMIO_5;
+            premi = 60000;
         } else if (posicion > 12) {
-            premi = PEDREA;
+            premi = 1000;
         }
         return premi;
     }
 
     /**
-     *
      * @param premi, es el valor del premi
-     * @param NumeroConsultar, es el numero introduit per teclat a consultar
-     * @return
+     * @param BoletoInput, es el numero introduit per teclat a consultar
+     */
+    //static String TextGuanyador ( int premi, int BoletoInput){
+    static void TextGuanyador(int premi, int BoletoInput, int PremiAdicional, int[] ArrayPremiAdicional) {
+
+        System.out.println();
+        System.out.print("Felicitats! Has guanyat ");
+
+        if (premi == 4000000) {
+            System.out.print("El primer premi ");
+        } else if (premi == 1250000) {
+            System.out.print("El segon premi ");
+        } else if (premi == 500000) {
+            System.out.print("El tercer premi ");
+        } else if (premi == 200000) {
+            System.out.print("El quart premi ");
+        } else if (premi == 60000) {
+            System.out.print("El cinque premi ");
+        } else if (premi == 1000) {
+            System.out.print("La pedrea ");
+        }
+        System.out.print(", un total de: " + premi + "€ amb el decim: " + BoletoInput);
+        if (PremiAdicional > 0 && premi == 0) {
+            System.out.println(" i un premi adicional de : " + PremiAdicional + "€");
+            PrintProvenenciaPremisAdicionals(ArrayPremiAdicional);
+        }
+    }
+
+    /**
+     * @return numeros
      */
     static int PremiAdicional(int[] TotalPremisAdicionals) {
         int premi = 0;
@@ -173,150 +249,104 @@ public class ProjecteLoteria {
 
         return premi;
     }
-static void TextGuanyador(int premi, int BoletoInput, int PremiAdicional, int[] ArrayPremiAdicional) {
-        final int PREMIO_1 = 4000000;
-        final int PREMIO_2 = 1250000;
-        final int PREMIO_3 = 500000;
-        final int PREMIO_4 = 200000;
-        final int PREMIO_5 = 60000;
-        final int PEDREA = 1000;
-        
-        System.out.println();
-        System.out.print("Felicitats! Has guanyat ");
-
-        if (premi == PREMIO_1) {
-            System.out.print("El primer premi ");
-        } else if (premi == PREMIO_2) {
-            System.out.print("El segon premi ");
-        } else if (premi == PREMIO_3) {
-            System.out.print("El tercer premi ");
-        } else if (premi == PREMIO_4) {
-            System.out.print("El quart premi ");
-        } else if (premi == PREMIO_5) {
-            System.out.print("El cinque premi ");
-        } else if (premi == PEDREA) {
-            System.out.print("La pedrea ");
-        }
-        System.out.print(", un total de: " + premi + "€ amb el decim: " + BoletoInput);
-        if (PremiAdicional > 0 && premi == 0) {
-            System.out.println(" i un premi adicional de : " + PremiAdicional + "€");
-            PrintProvenenciaPremisAdicionals(ArrayPremiAdicional);
-        }
-    }
-
-    static int[] TotalPremisAdicionals(int Reintegro, int NumAntIpost, int UltimasDosCifras, int Centenas) {
-        int numeros[] = new int[4];
-
-        for (int i = 0; i < numeros.length; i++) {
-            if (i == 0) {
-                numeros[i] = Reintegro;
-            } else if (i == 1) {
-                numeros[i] = NumAntIpost;
-            } else if (i == 2) {
-                numeros[i] = UltimasDosCifras;
-            } else if (i == 3) {
-                numeros[i] = Centenas;
-            }
-        }
-        return numeros;
-    }
-
-    static int PremiAddicional(int[] TotalPremisAdicionals) {
-        int premi = 0;
-        for (int totalPremisAdicional : TotalPremisAdicionals) {
-            if (totalPremisAdicional > premi) {
-                premi = totalPremisAdicional;
-            }
-        }
-
-        return premi;
-    }
+    // }
 
     /**
-     *
      * @param numeroConsultar, es el numero introduit per teclat a consultar
      * @param NumerosPremiados, es el numero premiat que surt del sorteig
-     * @param posicion, la posicio correspon al premi
      * @return retorna el valor del reintegro
      */
     static int Reintegro(int numeroConsultar, int[] NumerosPremiados) {
-        final int REINTEGRO = 20;
-        int total = 0;
+        int reintegro = 0;
         if (NumerosPremiados[0] % 10 == numeroConsultar % 10) {
-            total = REINTEGRO;
+            reintegro = 200;
         }
-        return total;
+        return reintegro;
     }
 
+    /*
+     * @param numeroConsultar,  es el numero introduit per teclat  a consultar
+     * @param NumerosPremiados, es el numero premiat que surt del sorteig
+     * @return retorna el premi  corresponent al numero anterior  i posterior
+     */
     /**
-     *
      * @param numeroConsultar, es el numero introduit per teclat a consultar
      * @param NumerosPremiados, es el numero premiat que surt del sorteig
      * @return retorna el premi corresponent al numero anterior i posterior
      */
     static int NumAntIpost(int numeroConsultar, int[] NumerosPremiados) {
-        final int PREMIOEXTRA_1 = 20000;
-        final int PREMIOEXTRA_2 = 12500;
-        final int PREMIOEXTRA_3 = 9600;
-
         int PremisAddicionals = 0;
 
         if (NumerosPremiados[0] - 1 == numeroConsultar || NumerosPremiados[0] + 1 == numeroConsultar) {
-            PremisAddicionals = PREMIOEXTRA_1;
+            PremisAddicionals = 20000;
         } else if (NumerosPremiados[1] - 1 == numeroConsultar || NumerosPremiados[1] + 1 == numeroConsultar) {
-            PremisAddicionals = PREMIOEXTRA_2;
+            PremisAddicionals = 12500;
         } else if (NumerosPremiados[2] - 1 == numeroConsultar || NumerosPremiados[2] + 1 == numeroConsultar) {
-            PremisAddicionals = PREMIOEXTRA_3;
+            PremisAddicionals = 9600;
         }
-
         return PremisAddicionals;
     }
 
     /**
-     *
      * @param numeroConsultar, es el numero introduit per teclat a consultar
      * @param NumerosPremiados, es el numero premiat que surt del sorteig
      * @return retorna el premi corresponent a les 2 ultimes xifres
      */
     static int UltimasDosCifras(int numeroConsultar, int[] NumerosPremiados) {
-        final int ULTIMA2CIFRA=1000;
         int PremisAddicionals = 0;
         if (NumerosPremiados[0] % 100 == numeroConsultar % 100) {
-            PremisAddicionals = ULTIMA2CIFRA;
+            PremisAddicionals = 1000;
         } else if (NumerosPremiados[1] % 100 == numeroConsultar % 100) {
-            PremisAddicionals = ULTIMA2CIFRA;
+            PremisAddicionals = 1000;
         } else if (NumerosPremiados[2] % 100 == numeroConsultar % 100) {
-            PremisAddicionals = ULTIMA2CIFRA;
+            PremisAddicionals = 1000;
         }
         return PremisAddicionals;
     }
 
     /**
-     *
      * @param numeroConsultar, es el numero introduit per teclat a consultar
      * @param NumerosPremiados, es el numero premiat que surt del sorteig
      * @return retorna premi corresponent a les centenas
      */
     static int Centenas(int numeroConsultar, int[] NumerosPremiados) {
-        final int PREMIOCENTENA=100;
         int PremisAddicionals = 0;
+
         if (NumerosPremiados[0] / 100 == numeroConsultar / 100) {
-            PremisAddicionals = PREMIOCENTENA;
+            PremisAddicionals = 1000;
         } else if (NumerosPremiados[1] / 100 == numeroConsultar / 100) {
-            PremisAddicionals = PREMIOCENTENA;
+            PremisAddicionals = 1000;
         } else if (NumerosPremiados[2] / 100 == numeroConsultar / 100) {
-            PremisAddicionals = PREMIOCENTENA;
+            PremisAddicionals = 1000;
         } else if (NumerosPremiados[3] / 100 == numeroConsultar / 100) {
-            PremisAddicionals = PREMIOCENTENA;
+            PremisAddicionals = 1000;
         } else if (NumerosPremiados[4] / 100 == numeroConsultar / 100) {
-            PremisAddicionals = PREMIOCENTENA;
+            PremisAddicionals = 1000;
         }
         return PremisAddicionals;
     }
-    /**
-     * Funcio que imprimeix els premis adicionals
-     * @param ArrayPremisADD que compleixi una condició més gran i igual perquè imprimeixi el resultat.
-     */
+
+    static int[] arrayAproximacions(int Reintegro, int NumAntIpost, int UltimasDosCifras, int Centenas) {
+        int[] numeros = new int[4];
+
+        for (int i = 0; i < numeros.length; i++) {
+            if (i == 0) {
+                numeros[i] = Reintegro;
+            }
+            if (i == 1) {
+                numeros[i] = NumAntIpost;
+            }
+            if (i == 2) {
+                numeros[i] = Centenas;
+            }
+            if (i == 3) {
+                numeros[i] = UltimasDosCifras;
+            }
+
+        }
+        return numeros;
+    }
+
     public static void PrintProvenenciaPremisAdicionals(int[] ArrayPremisADD) {
 
         System.out.println();
@@ -339,8 +369,9 @@ static void TextGuanyador(int premi, int BoletoInput, int PremiAdicional, int[] 
             System.out.println("Has rebut " + ArrayPremisADD[2] + "€ de el Centena de un dels primers 4 premis");
         }
         if (ArrayPremisADD[3] > 0) {
-            System.out.println("Has rebut " + ArrayPremisADD[3] + "��� de el Ultimes dues xifres d'un dels primers 3 premis");
+            System.out.println("Has rebut " + ArrayPremisADD[3] + "€ de el Ultimes dues xifres d'un dels primers 3 premis");
         }
 
     }
-}
+
+}   
