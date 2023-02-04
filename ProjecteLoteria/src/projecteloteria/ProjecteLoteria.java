@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class ProjecteLoteria {
 
     //Premis totals
-    public static final int TOTALPREMIS = 1807;
+    public static final int TOTALPREMIS = 1806;
 
     //Declaració scanner
     public static Scanner scan = new Scanner(System.in);
@@ -122,8 +122,16 @@ public class ProjecteLoteria {
                 //Consulta tots els premis
                 case 2: {
                     //Print de numeros Premiats
+
                     for (int i = 0; i < NumerosPremiados.length; i++) {
 
+                        //if per limitar sortida de premis per pantalla
+                          if (i == 13) {
+
+                              
+                            i = 1805;
+                          }
+                            
                         /*Amb aquesta linea situarem zeros a la esquerra del 
                         numero INT generat com a bolet per a que sigui del tamany desitjat, 
                         String.format "%05d" ens permetra agregar Zeros a la esquerra fins a un 
@@ -134,6 +142,8 @@ public class ProjecteLoteria {
 
                     }
                 }
+
+        
                 break;
 
                 case 3: {
@@ -236,9 +246,9 @@ public class ProjecteLoteria {
             premi = 1250000;
         } else if (posicion == 2) {
             premi = 500000;
-        } else if (posicion >= 3 && posicion <= 5) {
+        } else if (posicion >= 3 && posicion <= 4) {
             premi = 200000;
-        } else if (posicion >= 6 && posicion <= 12) {
+        } else if (posicion > 4 && posicion <= 12) {
             premi = 60000;
         } else if (posicion > 12) {
             premi = 1000;
@@ -256,28 +266,28 @@ public class ProjecteLoteria {
         System.out.println();
         System.out.print("Felicitats! T'ha tocat");
 
-        int premiDecim=0;
-        
+        int premiDecim = 0;
+
         if (premi == 4000000) {
-            premiDecim=328000;
+            premiDecim = 328000;
             System.out.print(" el primer premi");
         } else if (premi == 1250000) {
-            premiDecim=108000;
+            premiDecim = 108000;
             System.out.print("el segon premi");
         } else if (premi == 500000) {
-            premiDecim=48000;
+            premiDecim = 48000;
             System.out.print("el tercer premi");
         } else if (premi == 200000) {
-            premiDecim=20000;
+            premiDecim = 20000;
             System.out.print("el quart premi");
         } else if (premi == 60000) {
-            premiDecim=6000;
+            premiDecim = 6000;
             System.out.print("el cinque premi");
         } else if (premi == 1000) {
-            premiDecim=100;
+            premiDecim = 100;
             System.out.print("la pedrea ");
         }
-        System.out.print(", El numero " + BoletoInput+ " ha sigut premiat amb un total de: " + premi + " per serie i has guanyat " +premiDecim);
+        System.out.print(", El numero " + BoletoInput + " ha sigut premiat amb un total de: " + premi + " per serie i has guanyat " + premiDecim);
         if (PremiAdicional > 0 && premi == 0) {
             System.out.println(" i un premi adicional de : " + PremiAdicional + "€");
             imprimeixPremisAddicionals(ArrayPremiAdicional);
@@ -417,11 +427,11 @@ public class ProjecteLoteria {
         if (ArrayPremisADD[1] > 0) {
             System.out.print("Has rebut " + ArrayPremisADD[1] + "€ de el Numero anterior o posterior al ");
 
-            if (ArrayPremisADD[1] == 20000) {
+            if (ArrayPremisADD[1] == 2000) {
                 System.out.println("primer premi.");
-            } else if (ArrayPremisADD[1] == 12500) {
+            } else if (ArrayPremisADD[1] == 1250) {
                 System.out.println("segon premi.");
-            } else if (ArrayPremisADD[1] == 9600) {
+            } else if (ArrayPremisADD[1] == 960) {
                 System.out.println("tercer premi.");
             }
         }
