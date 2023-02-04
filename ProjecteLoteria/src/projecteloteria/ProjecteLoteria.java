@@ -161,12 +161,8 @@ public class ProjecteLoteria {
         }
     }
 
-    /**
-     * Comprova si el que hem introdüit per teclat sigui un enter
-     *
-     * @return Retorna el valor introdüit
-     */
-    static int validarEntero() {
+    
+    public static int validarEntero() {
         Scanner scan = new Scanner(System.in);
         int valor;
         System.out.println("Introdueix el teu número de la loteria: ");
@@ -208,7 +204,7 @@ public class ProjecteLoteria {
      * @param posicio
      * @return Retorna si es repeteix, o si no es repeteix
      */
-    static boolean comprovaRep(int[] array, int comprovaRep, int posicio) {
+    public static boolean comprovaRep(int[] array, int comprovaRep, int posicio) {
         boolean resultat = false;
         for (int i = 0; i <= posicio; i++) {
             if (Arrays.stream(array).noneMatch(p -> p == comprovaRep)) {
@@ -225,7 +221,7 @@ public class ProjecteLoteria {
      * @return Retorna la posició del premi en el que ha coincidit, en cas
      * contrari retorna -1
      */
-    static int ValidarNumero(int[] NumerosPremiats, int BoletoInput) {
+    public static int ValidarNumero(int[] NumerosPremiats, int BoletoInput) {
         for (int i = 0; i < NumerosPremiats.length; i++) {
             if (NumerosPremiats[i] == BoletoInput) {
                 return i;
@@ -234,11 +230,13 @@ public class ProjecteLoteria {
         return -1;
     }
 
+    
     /**
+     * 
      * @param posicion, la posicio correspon al premi
      * @return Retorna el premi corresponent
      */
-    static int Premi(int posicion) {
+    public static int Premi(int posicion) {
         int premi = 0;
         if (posicion == 0) {
             premi = 4000000;
@@ -261,7 +259,7 @@ public class ProjecteLoteria {
      * @param BoletoInput, es el numero introduit per teclat a consultar Treu
      * per pantalla una informació completa dels premis que hagis guanyat
      */
-    static void TextGuanyador(int premi, int BoletoInput, int PremiAdicional, int[] ArrayPremiAdicional) {
+    public static void TextGuanyador(int premi, int BoletoInput, int PremiAdicional, int[] ArrayPremiAdicional) {
 
         System.out.println();
         System.out.print("Felicitats! T'ha tocat");
@@ -298,7 +296,7 @@ public class ProjecteLoteria {
      * @return Retorna la suma del premis d'aproximació que tinguis en el teu
      * bolet en cas de no tindre premi
      */
-    static int PremiAddicional(int[] TotalPremisAdicionals) {
+    public static int PremiAddicional(int[] TotalPremisAdicionals) {
         int premi = 0;
         for (int totalPremisAdicional : TotalPremisAdicionals) {
             if (totalPremisAdicional > premi) {
@@ -315,7 +313,7 @@ public class ProjecteLoteria {
      * @param NumerosPremiados, És el número premiat que surt del sorteig
      * @return Retorna el valor del reintegro
      */
-    static int Reintegro(int numeroConsultar, int[] NumerosPremiados) {
+    public static int Reintegro(int numeroConsultar, int[] NumerosPremiados) {
         int reintegro = 0;
         if (NumerosPremiados[0] % 10 == numeroConsultar % 10) {
             reintegro = 20;
@@ -328,7 +326,7 @@ public class ProjecteLoteria {
      * @param NumerosPremiados, És el número premiat que surt del sorteig
      * @return retorna el premi corresponent al numero anterior i posterior
      */
-    static int NumAntIpost(int numeroConsultar, int[] NumerosPremiados) {
+    public static int NumAntIpost(int numeroConsultar, int[] NumerosPremiados) {
         int PremisAddicionals = 0;
 
         if (NumerosPremiados[0] - 1 == numeroConsultar || NumerosPremiados[0] + 1 == numeroConsultar) {
@@ -346,7 +344,7 @@ public class ProjecteLoteria {
      * @param NumerosPremiados, És el número premiat que surt del sorteig
      * @return retorna el premi corresponent a les 2 últimes xifres
      */
-    static int UltimasDosCifras(int numeroConsultar, int[] NumerosPremiados) {
+    public static int UltimasDosCifras(int numeroConsultar, int[] NumerosPremiados) {
         int PremisAddicionals = 0;
         if (NumerosPremiados[0] % 100 == numeroConsultar % 100) {
             PremisAddicionals = 100;
@@ -363,7 +361,7 @@ public class ProjecteLoteria {
      * @param NumerosPremiados, És el número premiat que surt del sorteig
      * @return retorna premi corresponent a les centenas
      */
-    static int Centenas(int numeroConsultar, int[] NumerosPremiados) {
+    public static int Centenas(int numeroConsultar, int[] NumerosPremiados) {
         int PremisAddicionals = 0;
 
         if (NumerosPremiados[0] / 100 == numeroConsultar / 100) {
@@ -390,7 +388,7 @@ public class ProjecteLoteria {
      * @param Centenas
      * @return Guardem en ordre els premis d'aproximació en un array
      */
-    static int[] arrayAproximacions(int Reintegro, int NumAntIpost, int UltimasDosCifras, int Centenas) {
+    public static int[] arrayAproximacions(int Reintegro, int NumAntIpost, int UltimasDosCifras, int Centenas) {
         int[] numeros = new int[4];
 
         for (int i = 0; i < numeros.length; i++) {
