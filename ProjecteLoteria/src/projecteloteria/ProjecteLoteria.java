@@ -23,10 +23,10 @@ public class ProjecteLoteria {
         //MAIN MENU
         boolean exit = false;
         while (!exit) {
-            System.out.println("-----------Menú d'opcions-----------");
-            System.out.println("1. Consultar un número");
-            System.out.println("2. Consultar els números premiats");
-            System.out.println("3. Sortir del menú");
+            System.out.println("-----------Menu d'opcions-----------");
+            System.out.println("1. Consultar un numero");
+            System.out.println("2. Consultar els numeros premiats");
+            System.out.println("3. Sortir del menu");
             int opciones = scan.nextInt();
             switch (opciones) {
                 //CONSULTAR NUMERO
@@ -63,7 +63,7 @@ public class ProjecteLoteria {
 
                         ///Menu de premi de bolet
                         if (posicio >= 0) {
-                            System.out.println("Enhorabona, el bolet està premiat!!");
+                            System.out.println("Enhorabona, el bolet esta premiat!!");
                             System.out.println("Vols saber el seu premi?");
                             System.out.println("1. Si");
                             System.out.println("2. No");
@@ -86,10 +86,10 @@ public class ProjecteLoteria {
 
                         } else {
                             //en cas de rebre premis adicionals i no rebre cap premi gran ni pedrea
-                            System.out.print("El teu bolet no està premiat");
+                            System.out.print("El teu bolet no esta premiat");
                             //Si el premi és major a 0, pero la posició no correpon a cap premi de sèrie entra
                             if (premiAddicional > 0 && posicio == -1) {
-                                System.out.println(", pero has rebut un premi adicional!!");
+                                System.out.println(", pero has rebut un premi addicional!!");
                                 System.out.println("Vols saber el seu premi?");
                                 System.out.println("1. Si");
                                 System.out.println("2. No");
@@ -165,7 +165,7 @@ public class ProjecteLoteria {
     public static int validarEntero() {
         Scanner scan = new Scanner(System.in);
         int valor;
-        System.out.println("Introdueix el teu número de la loteria: ");
+        System.out.println("Introdueix el teu numero de la loteria: ");
         while (!scan.hasNextInt()) {
             scan.next();
             System.out.println("El boleto es un número. Intenta-ho de nou");
@@ -271,23 +271,23 @@ public class ProjecteLoteria {
             System.out.print(" el primer premi");
         } else if (premi == 1250000) {
             premiDecim = 108000;
-            System.out.print("el segon premi");
+            System.out.print(" el segon premi");
         } else if (premi == 500000) {
             premiDecim = 48000;
-            System.out.print("el tercer premi");
+            System.out.print(" el tercer premi");
         } else if (premi == 200000) {
             premiDecim = 20000;
-            System.out.print("el quart premi");
+            System.out.print(" el quart premi");
         } else if (premi == 60000) {
             premiDecim = 6000;
-            System.out.print("el cinque premi");
+            System.out.print(" el cinque premi");
         } else if (premi == 1000) {
             premiDecim = 100;
-            System.out.print("la pedrea ");
+            System.out.print(" la pedrea ");
         }
         System.out.print(", El numero " + BoletoInput + " ha sigut premiat amb un total de: " + premi + " per serie i has guanyat " + premiDecim);
         if (PremiAdicional > 0 && premi == 0) {
-            System.out.println(" i un premi adicional de : " + PremiAdicional + "€");
+            System.out.println(" i un premi addicional de : " + PremiAdicional + "€");
             imprimeixPremisAddicionals(ArrayPremiAdicional);
         }
     }
