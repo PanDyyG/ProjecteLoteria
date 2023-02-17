@@ -15,153 +15,161 @@ public class ProjecteLoteria {
     //MAIN
     public static void main(String[] args) {
 
-        //Dec array numerosPremiats
-        int[] NumerosPremiados = new int[TOTALPREMIS];
+        int[] NumerosPremiados = ArrayPremiats();
 
-        GenRandNum(NumerosPremiados);
-
-        //MAIN MENU
-        boolean exit = false;
+        boolean exit = false; //MAIN MENU
         while (!exit) {
-            System.out.println("-----------Menu d'opcions-----------");
-            System.out.println("1. Consultar un numero");
-            System.out.println("2. Consultar els numeros premiats");
-            System.out.println("3. Sortir del menu");
-            int opciones = scan.nextInt();
-            switch (opciones) {
-                //CONSULTAR NUMERO
-                case 1: {
+            int opciones = menuOpcions();
+            switch (opciones) { //CONSULTAR NUMERO
 
-                    //Introducció de numero de Boleto
+                case 1: {   //Inicialitzacio funcions
+
                     int BoletoInput = validarEntero();
-
-                    //retorna la posicio on es troba el boleto introdiut en cas de que tingui un premi directe
                     int posicio = ValidarNumero(NumerosPremiados, BoletoInput);
-
-                    //en cas de coincidir el últim digit del boleto amb el ultim digit del primer premi
                     int reintegro = Reintegro(BoletoInput, NumerosPremiados);
-
-                    //Comprovació si el numero Input és anterior o posterior a alguns dels 3 primers premis
                     int numAntIpost = NumAntIpost(BoletoInput, NumerosPremiados);
-
-                    //Comprovació si el numero Input coindiceix amb els ultims 2 digits d'algun dels 3 primers premis
-                    int ultimasDosCifras = UltimasDosCifras(BoletoInput, NumerosPremiados);
-
-                    //Comprovació si el numero Input coindiceix amb els ultims 3 digits d'algun dels 4 primers premis
+                    int ultimasDosCifras = UltimesDosXifres(BoletoInput, NumerosPremiados);
                     int centenas = Centenas(BoletoInput, NumerosPremiados);
-
-                    //guarda quins premis'han rebut
                     int[] ArrayPremiAdicional = arrayAproximacions(reintegro, numAntIpost, ultimasDosCifras, centenas);
-
-                    //retorna la suma dels premis adicionals en un array
                     int premiAddicional = PremiAddicional(ArrayPremiAdicional);
-
-                    //Retorna valor de premi en euros
                     int premiAconseguit = Premi(posicio);
-
-                    if (premiAconseguit >= 0) {
-
-                        ///Menu de premi de bolet
-                        if (posicio >= 0) {
-                            System.out.println("Enhorabona, el bolet esta premiat!!");
-                            System.out.println("Vols saber el seu premi?");
-                            System.out.println("1. Si");
-                            System.out.println("2. No");
-                            //Variable per elegir el cas del següent switch
-                            int premi = scan.nextInt();
-                            boolean sortir = false;
-                            while (!sortir) {
-                                switch (premi) {
-                                    case 1: {
-                                        //Mostra el text amb els premis corresponents
-                                        TextGuanyador(premiAconseguit, BoletoInput, premiAddicional, ArrayPremiAdicional);
-                                        sortir = true;
-
-                                    }
-                                    case 2:
-                                        //Surt del switch 
-                                        sortir = true;
-                                }
-                            }
-
-                        } else {
-                            //en cas de rebre premis adicionals i no rebre cap premi gran ni pedrea
-                            System.out.print("El teu bolet no esta premiat");
-                            //Si el premi és major a 0, pero la posició no correpon a cap premi de sèrie entra
-                            if (premiAddicional > 0 && posicio == -1) {
-                                System.out.println(", pero has rebut un premi addicional!!");
-                                System.out.println("Vols saber el seu premi?");
-                                System.out.println("1. Si");
-                                System.out.println("2. No");
-                                //Variable per elegir el cas del següent switch
-                                int premiAdd = scan.nextInt();
-                                boolean sortirAdd = false;
-                                while (!sortirAdd) {
-                                    switch (premiAdd) {
-                                        case 1: {
-                                            //Mostra tots els premis adicionals aconseguits
-                                            System.out.println("Total premis en Aproximacions: " + premiAddicional + "€");
-                                            imprimeixPremisAddicionals(ArrayPremiAdicional);
-                                            sortirAdd = true;
-                                        }
-                                        case 2:
-                                            //Surt del switch 
-                                            sortirAdd = true;
-                                    }
-                                }
-
-                            }
-                        }
-                        //Salt de línia
-                        System.out.println();
+                    if (menuPremiAconseguit(premiAconseguit, posicio, BoletoInput, premiAddicional, ArrayPremiAdicional)) {
                         break;
-
-                    }
-
-                }
-                //Consulta tots els premis
-                case 2: {
-                    //Print de numeros Premiats
-
-                    for (int i = 0; i < NumerosPremiados.length; i++) {
-
-                        //if per limitar sortida de premis per pantalla
-                          if (i == 13) {
-
-                              
-                            i = 1805;
-                          }
-                            
-                        /*Amb aquesta linea situarem zeros a la esquerra del 
-                        numero INT generat com a bolet per a que sigui del tamany desitjat, 
-                        String.format "%05d" ens permetra agregar Zeros a la esquerra fins a un 
-                        tamany de numero de 5 digis, en base decimal.*/
-                        String CorrecionZero = String.format("%05d", NumerosPremiados[i]);
-                        //Mostra els boletos premiats
-                        System.out.println("Numero de boleto: " + CorrecionZero + " Premi: " + Premi(i) + "€");
-
                     }
                 }
-
-        
+                case 2: {   //Consulta tots els premis
+                    imprimirPremisGrans(NumerosPremiados);
+                }
                 break;
 
-                case 3: {
-                    int menuSortida;
-                    System.out.println();
-                    System.out.println("Vols rebre mes informacio sobre el sorteig de nadal?");
-                    System.out.println("1.Si");
-                    System.out.println("2.No");
-                    menuSortida = scan.nextInt();
-                    if (menuSortida == 2) {
-                        exit = true;
-                    }
+                case 3: {   //Sortir del sorteig
+                    exit = menuSortida(exit);
                 }
             }
         }
     }
+ 
+    public static int[] ArrayPremiats() {
+        //Dec array numerosPremiats
+        int[] NumerosPremiados = new int[TOTALPREMIS];
+        GenRandNum(NumerosPremiados);
+        return NumerosPremiados;
+    }
 
-    
+    public static boolean menuPremiAconseguit(int premiAconseguit, int posicio, int BoletoInput, int premiAddicional, int[] ArrayPremiAdicional) {
+        boolean sortir = false;
+        if (premiAconseguit >= 0) {
+            if (posicio >= 0) {  //Menu de premi de bolet
+                int premi = textBoletPremiat();
+                while (!sortir) {
+                    switch (premi) {
+                        case 1: {
+                            //Mostra el text amb els premis corresponents
+                            TextGuanyador(premiAconseguit, BoletoInput, premiAddicional, ArrayPremiAdicional);
+                            sortir = true;
+                        }
+                        case 2:
+                            sortir = true; //Surt del switch
+                    }
+                }
+            } else {
+                imprimirAproximacions(premiAddicional, posicio, ArrayPremiAdicional);
+            }
+            System.out.println();  //Salt de línia
+            sortir = true;
+        }
+        return sortir;
+    }
+
+    public static int textBoletPremiat() {
+        System.out.println("Enhorabona, el bolet esta premiat!!");
+        System.out.println("Vols saber el seu premi?");
+        System.out.println("1. Si");
+        System.out.println("2. No");
+        //Variable per elegir el cas del següent switch
+        int premi = scan.nextInt();
+        return premi;
+    }
+
+    public static boolean menuSortida(boolean exit) {
+        int menuSortida;
+        System.out.println();
+        System.out.println("Vols rebre mes informacio sobre el sorteig de nadal?");
+        System.out.println("1.Si");
+        System.out.println("2.No");
+        menuSortida = scan.nextInt();
+        if (menuSortida == 2) {
+            exit = true;
+        }
+        return exit;
+    }
+
+    public static void imprimirAproximacions(int premiAddicional, int posicio, int[] ArrayPremiAdicional) {
+        //en cas de rebre premis adicionals i no rebre cap premi gran ni pedrea
+        System.out.print("El teu bolet no esta premiat");
+        //Si el premi és major a 0, pero la posició no correpon a cap premi de sèrie entra
+        if (premiAddicional > 0 && posicio == -1) {
+            textMenuAproximacions();
+            int premiAdd = scan.nextInt(); //Variable per elegir el cas del següent switch
+            boolean sortirAdd = false;
+            while (!sortirAdd) {
+                switch (premiAdd) {
+                    case 1: {
+                        //Mostra tots els premis adicionals aconseguits
+                        System.out.println("Total premis en Aproximacions: " + premiAddicional + "€");
+                        imprimeixPremisAddicionals(ArrayPremiAdicional);
+                        sortirAdd = true;
+                    }
+                    case 2:
+                        sortirAdd = true;   //Surt del switch
+                }
+            }
+
+        }
+    }
+
+    public static void textMenuAproximacions() {
+        System.out.println(", pero has rebut un premi addicional!!");
+        System.out.println("Vols saber el seu premi?");
+        System.out.println("1. Si");
+        System.out.println("2. No");
+    }
+
+    public static int menuOpcions() {
+        System.out.println("-----------Menu d'opcions-----------");
+        System.out.println("1. Consultar un numero");
+        System.out.println("2. Consultar els numeros premiats");
+        System.out.println("3. Sortir del menu");
+        int opciones = scan.nextInt();
+        return opciones;
+    }
+
+    public static void imprimirPremisGrans(int[] NumerosPremiados) {
+        //Print de numeros Premiats
+
+        for (int i = 0; i < NumerosPremiados.length; i++) {
+
+            //if per limitar sortida de premis per pantalla
+            if (i == 13) {
+
+                i = 1805;
+            }
+
+            correcioZeros(NumerosPremiados, i);
+
+        }
+    }
+
+    public static void correcioZeros(int[] NumerosPremiados, int i) {
+        /*Amb aquesta linea situarem zeros a la esquerra del
+        numero INT generat com a bolet per a que sigui del tamany desitjat,
+        String.format "%05d" ens permetra agregar Zeros a la esquerra fins a un
+        tamany de numero de 5 digis, en base decimal.*/
+        String CorrecionZero = String.format("%05d", NumerosPremiados[i]);
+        //Mostra els boletos premiats
+        System.out.println("Numero de boleto: " + CorrecionZero + " Premi: " + Premi(i) + "€");
+    }
+
     public static int validarEntero() {
         Scanner scan = new Scanner(System.in);
         int valor;
@@ -230,9 +238,8 @@ public class ProjecteLoteria {
         return -1;
     }
 
-    
     /**
-     * 
+     *
      * @param posicion, la posicio correspon al premi
      * @return Retorna el premi corresponent
      */
@@ -344,7 +351,7 @@ public class ProjecteLoteria {
      * @param NumerosPremiados, És el número premiat que surt del sorteig
      * @return retorna el premi corresponent a les 2 últimes xifres
      */
-    public static int UltimasDosCifras(int numeroConsultar, int[] NumerosPremiados) {
+    public static int UltimesDosXifres(int numeroConsultar, int[] NumerosPremiados) {
         int PremisAddicionals = 0;
         if (NumerosPremiados[0] % 100 == numeroConsultar % 100) {
             PremisAddicionals = 100;
