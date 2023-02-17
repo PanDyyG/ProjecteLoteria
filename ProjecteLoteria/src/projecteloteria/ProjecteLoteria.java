@@ -8,7 +8,14 @@ public class ProjecteLoteria {
 
     //Premis totals
     public static final int TOTALPREMIS = 1806;
-
+    
+    public static final int PREMIGORDO = 4000000;
+    public static final int SEGONPREMI = 1250000;
+    public static final int TERCERPREMI = 500000;
+    public static final int QUARTPREMI = 200000;
+    public static final int CINQUEPREMI = 60000;
+    public static final int PEDREA = 1000;
+    
     //Declaració scanner
     public static Scanner scan = new Scanner(System.in);
 
@@ -246,17 +253,17 @@ public class ProjecteLoteria {
     public static int Premi(int posicion) {
         int premi = 0;
         if (posicion == 0) {
-            premi = 4000000;
+            premi = PREMIGORDO;
         } else if (posicion == 1) {
-            premi = 1250000;
+            premi = SEGONPREMI;
         } else if (posicion == 2) {
-            premi = 500000;
+            premi = TERCERPREMI;
         } else if (posicion >= 3 && posicion <= 4) {
-            premi = 200000;
+            premi = QUARTPREMI;
         } else if (posicion > 4 && posicion <= 12) {
-            premi = 60000;
+            premi = CINQUEPREMI;
         } else if (posicion > 12) {
-            premi = 1000;
+            premi = PEDREA;
         }
         return premi;
     }
@@ -273,22 +280,22 @@ public class ProjecteLoteria {
 
         int premiDecim = 0;
 
-        if (premi == 4000000) {
+        if (premi == PREMIGORDO) {
             premiDecim = 328000;
             System.out.print(" el primer premi");
-        } else if (premi == 1250000) {
+        } else if (premi == SEGONPREMI) {
             premiDecim = 108000;
             System.out.print(" el segon premi");
-        } else if (premi == 500000) {
+        } else if (premi == TERCERPREMI) {
             premiDecim = 48000;
             System.out.print(" el tercer premi");
-        } else if (premi == 200000) {
+        } else if (premi == QUARTPREMI) {
             premiDecim = 20000;
             System.out.print(" el quart premi");
-        } else if (premi == 60000) {
+        } else if (premi == CINQUEPREMI) {
             premiDecim = 6000;
             System.out.print(" el cinque premi");
-        } else if (premi == 1000) {
+        } else if (premi == PEDREA) {
             premiDecim = 100;
             System.out.print(" la pedrea ");
         }
