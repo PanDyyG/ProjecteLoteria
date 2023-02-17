@@ -16,6 +16,10 @@ public class ProjecteLoteria {
     public static final int CINQUEPREMI = 60000;
     public static final int PEDREA = 1000;
     
+    public static final String ANSI_RED = "\u001B[31m"; /*Variable constant del color*/
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String RESET = "\033[0m";
+    
     //Declaració scanner
     public static Scanner scan = new Scanner(System.in);
 
@@ -89,7 +93,7 @@ public class ProjecteLoteria {
     }
 
     public static int textBoletPremiat() {
-        System.out.println("Enhorabona, el bolet esta premiat!!");
+        System.out.println(ANSI_GREEN+ "Enhorabona, el bolet esta premiat!!" + RESET);
         System.out.println("Vols saber el seu premi?");
         System.out.println("1. Si");
         System.out.println("2. No");
@@ -113,7 +117,7 @@ public class ProjecteLoteria {
 
     public static void imprimirAproximacions(int premiAddicional, int posicio, int[] ArrayPremiAdicional) {
         //en cas de rebre premis adicionals i no rebre cap premi gran ni pedrea
-        System.out.print("El teu bolet no esta premiat");
+        System.out.print(ANSI_RED + "El teu bolet no esta premiat!" + RESET);
         //Si el premi és major a 0, pero la posició no correpon a cap premi de sèrie entra
         if (premiAddicional > 0 && posicio == -1) {
             textMenuAproximacions();
@@ -123,7 +127,7 @@ public class ProjecteLoteria {
                 switch (premiAdd) {
                     case 1: {
                         //Mostra tots els premis adicionals aconseguits
-                        System.out.println("Total premis en Aproximacions: " + premiAddicional + "€");
+                        System.out.println("Total premis en Aproximacions: " + ANSI_GREEN + premiAddicional + "€" + RESET);
                         imprimeixPremisAddicionals(ArrayPremiAdicional);
                         sortirAdd = true;
                     }
@@ -136,7 +140,7 @@ public class ProjecteLoteria {
     }
 
     public static void textMenuAproximacions() {
-        System.out.println(", pero has rebut un premi addicional!!");
+        System.out.println(ANSI_GREEN + ", pero has rebut un premi addicional!!" + RESET);
         System.out.println("Vols saber el seu premi?");
         System.out.println("1. Si");
         System.out.println("2. No");
@@ -282,26 +286,28 @@ public class ProjecteLoteria {
 
         if (premi == PREMIGORDO) {
             premiDecim = 328000;
-            System.out.print(" el primer premi");
+            System.out.print(" el primer premi.");
         } else if (premi == SEGONPREMI) {
             premiDecim = 108000;
-            System.out.print(" el segon premi");
+            System.out.print(" el segon premi.");
         } else if (premi == TERCERPREMI) {
             premiDecim = 48000;
-            System.out.print(" el tercer premi");
+            System.out.print(" el tercer premi.");
         } else if (premi == QUARTPREMI) {
             premiDecim = 20000;
-            System.out.print(" el quart premi");
+            System.out.print(" el quart premi.");
         } else if (premi == CINQUEPREMI) {
             premiDecim = 6000;
-            System.out.print(" el cinque premi");
+            System.out.print(" el cinque premi.");
         } else if (premi == PEDREA) {
             premiDecim = 100;
-            System.out.print(" la pedrea ");
+            System.out.print(" la pedrea.");
         }
-        System.out.print(", El numero " + BoletoInput + " ha sigut premiat amb un total de: " + premi + " per serie i has guanyat " + premiDecim);
+        System.out.println("");
+        System.out.print("El numero " + BoletoInput +
+                " ha sigut premiat amb un total de: " + ANSI_GREEN + premi + "€" + RESET + " per serie i has guanyat " + ANSI_GREEN + premiDecim + "€" + RESET);
         if (PremiAdicional > 0 && premi == 0) {
-            System.out.println(" i un premi addicional de : " + PremiAdicional + "€");
+            System.out.println(ANSI_GREEN + " i un premi addicional de : " + PremiAdicional + "€" + RESET);
             imprimeixPremisAddicionals(ArrayPremiAdicional);
         }
     }
@@ -434,10 +440,10 @@ public class ProjecteLoteria {
         System.out.println();
 
         if (ArrayPremisADD[0] > 0) {
-            System.out.println("Has rebut " + ArrayPremisADD[0] + "€ de el Reintegro");
+            System.out.println("Has rebut " + ANSI_GREEN + ArrayPremisADD[0] + "€" + RESET + " de el Reintegro");
         }
         if (ArrayPremisADD[1] > 0) {
-            System.out.print("Has rebut " + ArrayPremisADD[1] + "€ de el Numero anterior o posterior al ");
+            System.out.print("Has rebut " + ANSI_GREEN + ArrayPremisADD[1] + "€" + RESET + " de el Numero anterior o posterior al ");
 
             if (ArrayPremisADD[1] == 2000) {
                 System.out.println("primer premi.");
@@ -448,10 +454,10 @@ public class ProjecteLoteria {
             }
         }
         if (ArrayPremisADD[2] > 0) {
-            System.out.println("Has rebut " + ArrayPremisADD[2] + "€ de el Centena de un dels primers 4 premis");
+            System.out.println("Has rebut " + ANSI_GREEN + ArrayPremisADD[2] + "€" + RESET + " de el Centena de un dels primers 4 premis");
         }
         if (ArrayPremisADD[3] > 0) {
-            System.out.println("Has rebut " + ArrayPremisADD[3] + "€ de el Ultimes dues xifres d'un dels primers 3 premis");
+            System.out.println("Has rebut " + ANSI_GREEN + ArrayPremisADD[3] + "€" + RESET + " de el Ultimes dues xifres d'un dels primers 3 premis");
         }
     }
 }
