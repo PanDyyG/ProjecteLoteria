@@ -1,25 +1,28 @@
 package projecteloteria;
 
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Random;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 
 public class ProjecteLoteria {
 
     //Premis totals
     public static final int TOTALPREMIS = 1806;
-    
+
     public static final int PREMIGORDO = 4000000;
     public static final int SEGONPREMI = 1250000;
     public static final int TERCERPREMI = 500000;
     public static final int QUARTPREMI = 200000;
     public static final int CINQUEPREMI = 60000;
     public static final int PEDREA = 1000;
-    
-    public static final String ANSI_RED = "\u001B[31m"; /*Variable constant del color*/
+
+    public static final String ANSI_RED = "\u001B[31m";
+    /*Variable constant del color*/
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String RESET = "\033[0m";
-    
+
     //Declaració scanner
     public static Scanner scan = new Scanner(System.in);
 
@@ -35,7 +38,7 @@ public class ProjecteLoteria {
 
                 case 1: {   //Inicialitzacio funcions
 
-                    int BoletoInput = validarEntero();
+                    int BoletoInput = validarNumeroLoteria();
                     int posicio = ValidarNumero(NumerosPremiados, BoletoInput);
                     int reintegro = Reintegro(BoletoInput, NumerosPremiados);
                     int numAntIpost = NumAntIpost(BoletoInput, NumerosPremiados);
@@ -59,7 +62,7 @@ public class ProjecteLoteria {
             }
         }
     }
- 
+
     public static int[] ArrayPremiats() {
         //Dec array numerosPremiats
         int[] NumerosPremiados = new int[TOTALPREMIS];
@@ -93,12 +96,12 @@ public class ProjecteLoteria {
     }
 
     public static int textBoletPremiat() {
-        System.out.println(ANSI_GREEN+ "Enhorabona, el bolet esta premiat!!" + RESET);
+        System.out.println(ANSI_GREEN + "Enhorabona, el bolet esta premiat!!" + RESET);
         System.out.println("Vols saber el seu premi?");
         System.out.println("1. Si");
         System.out.println("2. No");
         //Variable per elegir el cas del següent switch
-        int premi = scan.nextInt();
+        int premi = validarNumeroEnter();
         return premi;
     }
 
@@ -108,11 +111,28 @@ public class ProjecteLoteria {
         System.out.println("Vols rebre mes informacio sobre el sorteig de nadal?");
         System.out.println("1.Si");
         System.out.println("2.No");
-        menuSortida = scan.nextInt();
+        menuSortida = validarNumeroEnter();
         if (menuSortida == 2) {
             exit = true;
         }
         return exit;
+    }
+
+    public static int validarNumeroEnter() {
+        boolean entradaIncorrecta = true;
+        int num = 0;
+        while (entradaIncorrecta) {
+            System.out.print("Introdueix una opcio valida: ");
+            if (scan.hasNextInt()) {
+                num = scan.nextInt();
+                if (num == 1 || num == 2) {
+                    entradaIncorrecta = false;
+                }
+            } else {
+                scan.next();
+            }
+        }
+        return num;
     }
 
     public static void imprimirAproximacions(int premiAddicional, int posicio, int[] ArrayPremiAdicional) {
@@ -121,7 +141,7 @@ public class ProjecteLoteria {
         //Si el premi és major a 0, pero la posició no correpon a cap premi de sèrie entra
         if (premiAddicional > 0 && posicio == -1) {
             textMenuAproximacions();
-            int premiAdd = scan.nextInt(); //Variable per elegir el cas del següent switch
+            int premiAdd = validarNumeroEnter(); //Variable per elegir el cas del següent switch
             boolean sortirAdd = false;
             while (!sortirAdd) {
                 switch (premiAdd) {
@@ -146,12 +166,50 @@ public class ProjecteLoteria {
         System.out.println("2. No");
     }
 
+    public static String menuIdioma() {
+        System.out.println("En quin idioma vols executar el programa, escriu la abreviatura?");
+        System.out.println("1.Catala");
+        System.out.println("2.Español");
+        String opciones = idiomaValido();
+        return opciones;
+
+    }
+
+    public static String idiomaValido() {
+        String idioma = "";
+        while (!idioma.equals("ca") && !idioma.equals("en")) {
+            idioma = scan.nextLine();
+            System.out.println("Introdueix una opcio valida: ");
+        }
+        return idioma;
+    }
+
+    public static ResourceBundle cargarRecursos(String idioma) {
+        Locale locale = new Locale(idioma);
+        return ResourceBundle.getBundle("strings", locale);
+    }
+
+    public static int LlegirNumeroEnter() {
+        boolean entradaIncorrecta = true;
+        int num = 0;
+        while (entradaIncorrecta) {
+            System.out.print("Introdueix una opcio valida: ");
+            if (scan.hasNextInt()) {
+                num = scan.nextInt();
+                entradaIncorrecta = false;
+            } else {
+                scan.next();
+            }
+        }
+        return num;
+    }
+
     public static int menuOpcions() {
         System.out.println("-----------Menu d'opcions-----------");
         System.out.println("1. Consultar un numero");
         System.out.println("2. Consultar els numeros premiats");
         System.out.println("3. Sortir del menu");
-        int opciones = scan.nextInt();
+        int opciones = LlegirNumeroEnter();
         return opciones;
     }
 
@@ -181,13 +239,13 @@ public class ProjecteLoteria {
         System.out.println("Numero de boleto: " + CorrecionZero + " Premi: " + Premi(i) + "€");
     }
 
-    public static int validarEntero() {
-        Scanner scan = new Scanner(System.in);
+    public static int validarNumeroLoteria() {
+
         int valor;
-        System.out.println("Introdueix el teu numero de la loteria: ");
+        System.out.print("Introdueix el teu numero de la loteria: ");
         while (!scan.hasNextInt()) {
             scan.next();
-            System.out.println("El boleto es un número. Intenta-ho de nou");
+            System.out.print("Introdueix el teu numero de la loteria: ");
         }
         valor = scan.nextInt();
         return valor;
@@ -304,8 +362,8 @@ public class ProjecteLoteria {
             System.out.print(" la pedrea.");
         }
         System.out.println("");
-        System.out.print("El numero " + BoletoInput +
-                " ha sigut premiat amb un total de: " + ANSI_GREEN + premi + "€" + RESET + " per serie i has guanyat " + ANSI_GREEN + premiDecim + "€" + RESET);
+        System.out.print("El numero " + BoletoInput
+                + " ha sigut premiat amb un total de: " + ANSI_GREEN + premi + "€" + RESET + " per serie i has guanyat " + ANSI_GREEN + premiDecim + "€" + RESET);
         if (PremiAdicional > 0 && premi == 0) {
             System.out.println(ANSI_GREEN + " i un premi addicional de : " + PremiAdicional + "€" + RESET);
             imprimeixPremisAddicionals(ArrayPremiAdicional);
