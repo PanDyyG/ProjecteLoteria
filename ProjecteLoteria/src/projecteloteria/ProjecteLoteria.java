@@ -713,7 +713,6 @@ public class ProjecteLoteria {
                 Logger.getLogger(ProjecteLoteria.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
         return dis;
     }
 
