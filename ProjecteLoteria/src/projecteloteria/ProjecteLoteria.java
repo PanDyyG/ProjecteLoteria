@@ -1,5 +1,6 @@
 package projecteloteria;
 
+// <editor-fold defaultstate="collapsed" desc="Imports">
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Random;
@@ -13,6 +14,9 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+// </editor-fold>
+
+// <editor-fold defaultstate="collapsed" desc="Classe Clients">
 
 class Cliente {
 
@@ -22,9 +26,12 @@ class Cliente {
     double diners;
     double premi;
 }
+// </editor-fold>
 
 public class ProjecteLoteria {
-
+    
+// <editor-fold defaultstate="collapsed" desc="Variables Globals">
+    
     public static final String NOM_FTX_CLIENTS_BIN = "./clientes.bin";
 
     //Premis totals
@@ -44,7 +51,8 @@ public class ProjecteLoteria {
 
     //Declaració scanner
     public static Scanner scan = new Scanner(System.in);
-
+// </editor-fold>
+    
     //MAIN
     public static void main(String[] args) {
 
@@ -84,14 +92,8 @@ public class ProjecteLoteria {
             }
         }
     }
-
-    public static int[] ArrayPremiats() {
-        //Dec array numerosPremiats
-        int[] NumerosPremiados = new int[TOTALPREMIS];
-        GenRandNum(NumerosPremiados);
-        return NumerosPremiados;
-    }
-
+    
+// <editor-fold defaultstate="collapsed" desc="Menus">
     public static int menuOpcions() {
         System.out.println("-----------Menu d'opcions-----------");
         System.out.println("1. Consultar un numero");
@@ -181,7 +183,64 @@ public class ProjecteLoteria {
         int premi = validarNumeroEnter();
         return premi;
     }
+    
+    public static void textMenuAproximacions() {
+        System.out.println(ANSI_GREEN + ", pero has rebut un premi addicional!!" + RESET);
+        System.out.println("Vols saber el seu premi?");
+        System.out.println("1. Si");
+        System.out.println("2. No");
+    }
+    
+    // </editor-fold>
+    
+// <editor-fold defaultstate="collapsed" desc="Idioma">
+    public static String menuIdioma() {
+        System.out.println("En quin idioma vols executar el programa, escriu la abreviatura?");
+        System.out.println("1.Catala");
+        System.out.println("2.Español");
+        String opciones = idiomaValido();
+        return opciones;
 
+    }
+
+    public static String idiomaValido() {
+        String idioma = "";
+        while (!idioma.equals("ca") && !idioma.equals("en")) {
+            idioma = scan.nextLine();
+            System.out.println("Introdueix una opcio valida: ");
+        }
+        return idioma;
+    }
+
+    public static ResourceBundle cargarRecursos(String idioma) {
+        Locale locale = new Locale(idioma);
+        return ResourceBundle.getBundle("strings", locale);
+    }
+    // </editor-fold>
+    
+// <editor-fold defaultstate="collapsed" desc="Premis + Loteria">
+    public static int[] ArrayPremiats() {
+        //Dec array numerosPremiats
+        int[] NumerosPremiados = new int[TOTALPREMIS];
+        GenRandNum(NumerosPremiados);
+        return NumerosPremiados;
+    }
+    
+    public static int LlegirNumeroEnter() {
+        boolean entradaIncorrecta = true;
+        int num = 0;
+        while (entradaIncorrecta) {
+            System.out.print("Introdueix una opcio valida: ");
+            if (scan.hasNextInt()) {
+                num = scan.nextInt();
+                entradaIncorrecta = false;
+            } else {
+                scan.next();
+            }
+        }
+        return num;
+    }
+    
     public static int validarNumeroEnter() {
         boolean entradaIncorrecta = true;
         int num = 0;
@@ -198,7 +257,7 @@ public class ProjecteLoteria {
         }
         return num;
     }
-
+    
     public static void imprimirAproximacions(int premiAddicional, int posicio, int[] ArrayPremiAdicional) {
         //en cas de rebre premis adicionals i no rebre cap premi gran ni pedrea
         System.out.print(ANSI_RED + "El teu bolet no esta premiat!" + RESET);
@@ -222,52 +281,7 @@ public class ProjecteLoteria {
 
         }
     }
-
-    public static void textMenuAproximacions() {
-        System.out.println(ANSI_GREEN + ", pero has rebut un premi addicional!!" + RESET);
-        System.out.println("Vols saber el seu premi?");
-        System.out.println("1. Si");
-        System.out.println("2. No");
-    }
-
-    public static String menuIdioma() {
-        System.out.println("En quin idioma vols executar el programa, escriu la abreviatura?");
-        System.out.println("1.Catala");
-        System.out.println("2.Español");
-        String opciones = idiomaValido();
-        return opciones;
-
-    }
-
-    public static String idiomaValido() {
-        String idioma = "";
-        while (!idioma.equals("ca") && !idioma.equals("en")) {
-            idioma = scan.nextLine();
-            System.out.println("Introdueix una opcio valida: ");
-        }
-        return idioma;
-    }
-
-    public static ResourceBundle cargarRecursos(String idioma) {
-        Locale locale = new Locale(idioma);
-        return ResourceBundle.getBundle("strings", locale);
-    }
-
-    public static int LlegirNumeroEnter() {
-        boolean entradaIncorrecta = true;
-        int num = 0;
-        while (entradaIncorrecta) {
-            System.out.print("Introdueix una opcio valida: ");
-            if (scan.hasNextInt()) {
-                num = scan.nextInt();
-                entradaIncorrecta = false;
-            } else {
-                scan.next();
-            }
-        }
-        return num;
-    }
-
+    
     public static void imprimirPremisGrans(int[] NumerosPremiados) {
         //Print de numeros Premiats
 
@@ -584,8 +598,10 @@ public class ProjecteLoteria {
         if (ArrayPremisADD[3] > 0) {
             System.out.println("Has rebut " + ANSI_GREEN + ArrayPremisADD[3] + "€" + RESET + " de el Ultimes dues xifres d'un dels primers 3 premis");
         }
-    }
-
+        
+    }// </editor-fold>
+    
+// <editor-fold defaultstate="collapsed" desc="Binari">
     /**
      * Funcion que abre un fichero y, opcionalmente, lo crea si no existe
      *
@@ -780,4 +796,5 @@ public class ProjecteLoteria {
         File f = new File(NOM_FTX_CLIENTS_BIN);
         f.delete();
     }
+          // </editor-fold>
 }
