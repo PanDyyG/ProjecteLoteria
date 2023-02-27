@@ -4,10 +4,28 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Random;
 import java.util.ResourceBundle;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+class Cliente {
+    int codi;
+    String nom;
+    int boleto;
+    double diners;
+    double premi;
+}
 
 public class ProjecteLoteria {
-
+   
+    public static final String NOM_FTX_CLIENTS_BIN = "./clientes.bin";
+   
     //Premis totals
     public static final int TOTALPREMIS = 1806;
 
@@ -37,7 +55,6 @@ public class ProjecteLoteria {
             switch (opciones) { //CONSULTAR NUMERO
 
                 case 1: {   //Inicialitzacio funcions
-
                     int BoletoInput = validarNumeroLoteria();
                     int posicio = ValidarNumero(NumerosPremiados, BoletoInput);
                     int reintegro = Reintegro(BoletoInput, NumerosPremiados);
@@ -48,15 +65,18 @@ public class ProjecteLoteria {
                     int premiAddicional = PremiAddicional(ArrayPremiAdicional);
                     int premiAconseguit = Premi(posicio);
                     if (menuPremiAconseguit(premiAconseguit, posicio, BoletoInput, premiAddicional, ArrayPremiAdicional)) {
-                        break;
+                    break;
                     }
                 }
                 case 2: {   //Consulta tots els premis
                     imprimirPremisGrans(NumerosPremiados);
                 }
                 break;
-
-                case 3: {   //Sortir del sorteig
+                case 3: {   //Colla
+                    opcionsColla();
+                }
+                break;
+                case 4: {   //Sortir del sorteig
                     exit = menuSortida(exit);
                 }
             }
@@ -69,7 +89,58 @@ public class ProjecteLoteria {
         GenRandNum(NumerosPremiados);
         return NumerosPremiados;
     }
+   
+    public static int menuOpcions() {
+        System.out.println("-----------Menu d'opcions-----------");
+        System.out.println("1. Consultar un numero");
+        System.out.println("2. Consultar els numeros premiats");
+        System.out.println("3. Consultar o afegir una colla");
+        System.out.println("4. Sortir del menu");
+        int opciones = LlegirNumeroEnter();
+        return opciones;
+    }
+   
+    public static void opcionsColla() {
+        int opcion = mostrarMenuColla();
+        while (opcion != 0) {
+            switch (opcion) {
+                case 1:
+                    GrabarClientesBinario();
+                    break;
+                case 2:
+                    LeerClientesBinario();
+                    break;
+            }
+            opcion = mostrarMenuColla();
+        }
+    }
+   
+    public static int mostrarMenuColla() {
+        int opcion;
+        System.out.println("1.- Afegir un client a la colla");
+        System.out.println("2.- Consultar els clients de la colla");
+        System.out.println("0.- Sortir del menú de colles");
+        System.out.print("Tria una opció:");
 
+        opcion = scan.nextInt();
+        scan.nextLine();
+
+        return opcion;
+    }
+   
+    public static boolean menuSortida(boolean exit) {
+        int menuSortida;
+        System.out.println();
+        System.out.println("Vols rebre mes informacio sobre el sorteig de nadal?");
+        System.out.println("1.Si");
+        System.out.println("2.No");
+        menuSortida = validarNumeroEnter();
+        if (menuSortida == 2) {
+            exit = true;
+        }
+        return exit;
+    }
+   
     public static boolean menuPremiAconseguit(int premiAconseguit, int posicio, int BoletoInput, int premiAddicional, int[] ArrayPremiAdicional) {
         boolean sortir = false;
         if (premiAconseguit >= 0) {
@@ -103,19 +174,6 @@ public class ProjecteLoteria {
         //Variable per elegir el cas del següent switch
         int premi = validarNumeroEnter();
         return premi;
-    }
-
-    public static boolean menuSortida(boolean exit) {
-        int menuSortida;
-        System.out.println();
-        System.out.println("Vols rebre mes informacio sobre el sorteig de nadal?");
-        System.out.println("1.Si");
-        System.out.println("2.No");
-        menuSortida = validarNumeroEnter();
-        if (menuSortida == 2) {
-            exit = true;
-        }
-        return exit;
     }
 
     public static int validarNumeroEnter() {
@@ -202,15 +260,6 @@ public class ProjecteLoteria {
             }
         }
         return num;
-    }
-
-    public static int menuOpcions() {
-        System.out.println("-----------Menu d'opcions-----------");
-        System.out.println("1. Consultar un numero");
-        System.out.println("2. Consultar els numeros premiats");
-        System.out.println("3. Sortir del menu");
-        int opciones = LlegirNumeroEnter();
-        return opciones;
     }
 
     public static void imprimirPremisGrans(int[] NumerosPremiados) {
@@ -517,5 +566,173 @@ public class ProjecteLoteria {
         if (ArrayPremisADD[3] > 0) {
             System.out.println("Has rebut " + ANSI_GREEN + ArrayPremisADD[3] + "€" + RESET + " de el Ultimes dues xifres d'un dels primers 3 premis");
         }
+    }
+    /**
+     * Funcion que abre un fichero y, opcionalmente, lo crea si no existe
+     *
+     * @param nomFichero Nombre del fichero a abrir
+     * @param crear Si lo que queremos crear en el caso que no exista
+     * @return File con el fichero que se ha abierto o null si no existe o no se
+     * ha podido crear
+     */
+    public static File AbrirFichero(String nomFichero, boolean crear) {
+        File result = null;
+
+        result = new File(nomFichero);
+
+        if (!result.exists()) {
+            if (crear) {
+                try {
+                    result.createNewFile();
+                } catch (IOException ex) {
+                    Logger.getLogger(ProjecteLoteria.class.getName()).log(Level.SEVERE, null, ex);
+                    result = null;
+                }
+            } else {
+                result = null;
+            }
+        }
+
+        return result;
+    }
+
+    public static String PedirLineaTeclado() {
+        return scan.nextLine();
+    }
+
+    public static Cliente PedirDatosCliente() {
+        Cliente c = new Cliente();
+        System.out.print("Codi: ");
+        c.codi = scan.nextInt();
+        scan.nextLine();
+        if (c.codi != 0) {
+            System.out.print("Nom: ");
+            c.nom = scan.nextLine();
+            System.out.print("Boleto: ");
+            c.boleto = scan.nextInt();
+            System.out.print("Diners ficats: ");
+            c.diners = scan.nextFloat();
+        } else {
+            c = null;
+        }
+        return c;
+    }
+
+    public static void EscribirDatosCliente(Cliente c) {
+        System.out.println("Codi: " + c.codi);
+        System.out.println("Nom: " + c.nom);
+        System.out.println("Boleto: " + c.boleto);
+        System.out.println("Diners: " + c.diners);
+    }
+
+    public static void GrabarClientesBinario() {
+        DataOutputStream dos = AbrirFicheroEscrituraBinario(NOM_FTX_CLIENTS_BIN, true, true);
+
+        Cliente cli = PedirDatosCliente();
+        while (cli != null) {
+            GrabarDatosClienteBinario(dos, cli);
+            cli = PedirDatosCliente();
+        }
+
+        CerrarFicheroBinario(dos);
+
+    }
+
+    public static DataOutputStream AbrirFicheroEscrituraBinario(String nomFichero, boolean crear, boolean blnAnyadir) {
+        DataOutputStream dos = null;
+        File f = AbrirFichero(nomFichero, crear);
+
+        if (f != null) {
+            // Declarar el writer para poder escribir en el fichero¡
+            FileOutputStream writer;
+            try {
+                writer = new FileOutputStream(f, blnAnyadir);
+                // PrintWriter para poder escribir más comodamente
+                dos = new DataOutputStream(writer);
+            } catch (IOException ex) {
+                Logger.getLogger(ProjecteLoteria.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        return dos;
+    }
+
+    public static void CerrarFicheroBinario(DataOutputStream dos) {
+        try {
+            dos.flush();
+            dos.close();
+        } catch (IOException ex) {
+            Logger.getLogger(ProjecteLoteria.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static void CerrarFicheroBinario(DataInputStream dis) {
+        try {
+            dis.close();
+        } catch (IOException ex) {
+            Logger.getLogger(ProjecteLoteria.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static void GrabarDatosClienteBinario(DataOutputStream dos, Cliente cli) {
+        try {
+            dos.writeInt(cli.codi);
+            dos.writeUTF(cli.nom);
+            dos.writeInt(cli.boleto);
+            dos.writeDouble(cli.diners);
+        } catch (IOException ex) {
+            Logger.getLogger(ProjecteLoteria.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public static void LeerClientesBinario() {
+        DataInputStream dis = AbrirFicheroLecturaBinario(NOM_FTX_CLIENTS_BIN, true);
+
+        Cliente cli = LeerDatosClienteBinario(dis);
+        while (cli != null) {
+            EscribirDatosCliente(cli);
+            cli = LeerDatosClienteBinario(dis);
+        }
+
+        CerrarFicheroBinario(dis);
+    }
+
+    public static DataInputStream AbrirFicheroLecturaBinario(String nomFichero, boolean crear) {
+        DataInputStream dis = null;
+        File f = AbrirFichero(nomFichero, crear);
+
+        if (f != null) {
+            // Declarar el writer para poder escribir en el fichero¡
+            FileInputStream reader;
+            try {
+                reader = new FileInputStream(f);
+                // PrintWriter para poder escribir más comodamente
+                dis = new DataInputStream(reader);
+            } catch (IOException ex) {
+                Logger.getLogger(ProjecteLoteria.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        return dis;
+    }
+
+    public static Cliente LeerDatosClienteBinario(DataInputStream dis) {
+        Cliente cli = new Cliente();
+
+        try {
+            cli.codi = dis.readInt();
+            cli.nom = dis.readUTF();
+            cli.boleto = dis.readInt();
+            cli.diners = dis.readDouble();
+
+        } catch (IOException ex) {
+            cli = null;
+        }
+        return cli;
+    }
+    public static void BorrarFichero(String filename) {
+        File f = new File(NOM_FTX_CLIENTS_BIN);
+        f.delete();
     }
 }
