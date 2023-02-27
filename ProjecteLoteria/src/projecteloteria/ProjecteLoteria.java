@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 class Cliente {
+
     int codi;
     String nom;
     int boleto;
@@ -23,9 +24,9 @@ class Cliente {
 }
 
 public class ProjecteLoteria {
-   
+
     public static final String NOM_FTX_CLIENTS_BIN = "./clientes.bin";
-   
+
     //Premis totals
     public static final int TOTALPREMIS = 1806;
 
@@ -56,6 +57,7 @@ public class ProjecteLoteria {
 
                 case 1: {   //Inicialitzacio funcions
                     int BoletoInput = validarNumeroLoteria();
+                    int any = validarNumeroAny();
                     int posicio = ValidarNumero(NumerosPremiados, BoletoInput);
                     int reintegro = Reintegro(BoletoInput, NumerosPremiados);
                     int numAntIpost = NumAntIpost(BoletoInput, NumerosPremiados);
@@ -65,7 +67,7 @@ public class ProjecteLoteria {
                     int premiAddicional = PremiAddicional(ArrayPremiAdicional);
                     int premiAconseguit = Premi(posicio);
                     if (menuPremiAconseguit(premiAconseguit, posicio, BoletoInput, premiAddicional, ArrayPremiAdicional)) {
-                    break;
+                        break;
                     }
                 }
                 case 2: {   //Consulta tots els premis
@@ -89,7 +91,7 @@ public class ProjecteLoteria {
         GenRandNum(NumerosPremiados);
         return NumerosPremiados;
     }
-   
+
     public static int menuOpcions() {
         System.out.println("-----------Menu d'opcions-----------");
         System.out.println("1. Consultar un numero");
@@ -99,7 +101,7 @@ public class ProjecteLoteria {
         int opciones = LlegirNumeroEnter();
         return opciones;
     }
-   
+
     public static void opcionsColla() {
         int opcion = mostrarMenuColla();
         while (opcion != 0) {
@@ -110,15 +112,19 @@ public class ProjecteLoteria {
                 case 2:
                     LeerClientesBinario();
                     break;
+                case 3:
+                    LeerInformacioColla();
+                    break;
             }
             opcion = mostrarMenuColla();
         }
     }
-   
+
     public static int mostrarMenuColla() {
         int opcion;
         System.out.println("1.- Afegir un client a la colla");
         System.out.println("2.- Consultar els clients de la colla");
+        System.out.println("3.- Consultar informació de la colla");
         System.out.println("0.- Sortir del menú de colles");
         System.out.print("Tria una opció:");
 
@@ -127,7 +133,7 @@ public class ProjecteLoteria {
 
         return opcion;
     }
-   
+
     public static boolean menuSortida(boolean exit) {
         int menuSortida;
         System.out.println();
@@ -140,7 +146,7 @@ public class ProjecteLoteria {
         }
         return exit;
     }
-   
+
     public static boolean menuPremiAconseguit(int premiAconseguit, int posicio, int BoletoInput, int premiAddicional, int[] ArrayPremiAdicional) {
         boolean sortir = false;
         if (premiAconseguit >= 0) {
@@ -295,6 +301,18 @@ public class ProjecteLoteria {
         while (!scan.hasNextInt()) {
             scan.next();
             System.out.print("Introdueix el teu numero de la loteria: ");
+        }
+        valor = scan.nextInt();
+        return valor;
+    }
+
+    public static int validarNumeroAny() {
+
+        int valor;
+        System.out.print("Introdueix l'any del sorteig de la loteria: ");
+        while (!scan.hasNextInt()) {
+            scan.next();
+            System.out.print("Introdueix l'any del sorteig de la loteria: ");
         }
         valor = scan.nextInt();
         return valor;
@@ -567,6 +585,7 @@ public class ProjecteLoteria {
             System.out.println("Has rebut " + ANSI_GREEN + ArrayPremisADD[3] + "€" + RESET + " de el Ultimes dues xifres d'un dels primers 3 premis");
         }
     }
+
     /**
      * Funcion que abre un fichero y, opcionalmente, lo crea si no existe
      *
@@ -611,11 +630,21 @@ public class ProjecteLoteria {
             System.out.print("Boleto: ");
             c.boleto = scan.nextInt();
             System.out.print("Diners ficats: ");
-            c.diners = scan.nextFloat();
+            c.diners = validarDinersFicats();
         } else {
             c = null;
         }
         return c;
+    }
+
+    public static double validarDinersFicats() {
+
+        Double valor = scan.nextDouble();
+        while (!scan.hasNextInt() || valor > 60 || valor % 5 != 0) {
+            System.out.print("Els diners no són vàlids. Torna a provar: ");
+            valor = scan.nextDouble();
+        }
+        return valor;
     }
 
     public static void EscribirDatosCliente(Cliente c) {
@@ -697,7 +726,23 @@ public class ProjecteLoteria {
 
         CerrarFicheroBinario(dis);
     }
-
+    
+    public static void LeerInformacioColla() {
+        DataInputStream dis = AbrirFicheroLecturaBinario(NOM_FTX_CLIENTS_BIN, true);
+        double contarPremi = 0;
+        int contarClients = 0;
+        double contarDiners = 0;
+        Cliente cli = LeerDatosClienteBinario(dis);
+        while (cli != null) {
+            contarClients = contarClients + 1;
+            contarPremi = contarPremi + cli.premi;
+            contarDiners = contarDiners + cli.diners;
+            cli = LeerDatosClienteBinario(dis);
+        }
+        System.out.println(contarClients + " " + contarDiners + " " + contarPremi);
+        CerrarFicheroBinario(dis);
+    }
+    
     public static DataInputStream AbrirFicheroLecturaBinario(String nomFichero, boolean crear) {
         DataInputStream dis = null;
         File f = AbrirFichero(nomFichero, crear);
@@ -730,6 +775,7 @@ public class ProjecteLoteria {
         }
         return cli;
     }
+
     public static void BorrarFichero(String filename) {
         File f = new File(NOM_FTX_CLIENTS_BIN);
         f.delete();
