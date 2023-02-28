@@ -10,7 +10,9 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,6 +34,8 @@ public class ProjecteLoteria {
     
 // <editor-fold defaultstate="collapsed" desc="Variables Globals">
     
+    public static final String RUTA = "./";
+    public static final String EXTENSIO = ".txt";
     public static final String NOM_FTX_CLIENTS_BIN = "./clientes.bin";
 
     //Premis totals
@@ -64,8 +68,11 @@ public class ProjecteLoteria {
             switch (opciones) { //CONSULTAR NUMERO
 
                 case 1: {   //Inicialitzacio funcions
+                    System.out.println("Introdueix l'any");
+                    String any = scan.next();
+                    String sorteig = sorteigString(NumerosPremiados);
+                    EscribirFichero(sorteig, any);
                     int BoletoInput = validarNumeroLoteria();
-                    int any = validarNumeroAny();
                     int posicio = ValidarNumero(NumerosPremiados, BoletoInput);
                     int reintegro = Reintegro(BoletoInput, NumerosPremiados);
                     int numAntIpost = NumAntIpost(BoletoInput, NumerosPremiados);
@@ -600,7 +607,77 @@ public class ProjecteLoteria {
         }
         
     }// </editor-fold>
-    
+
+// <editor-fold defaultstate="collapsed" desc="Guardar Sorteig en txt">    
+public static String sorteigString(int[] boleto) {
+        String result = "";
+        for (int i = 0; i < boleto.length; i++) {
+            result += boleto[i] + " ";
+        }
+        return result;
+    }    
+public static File AbrirFichero(String nomFichero, boolean crear) {
+        File result = new File(nomFichero);
+
+        if (!result.exists()) {
+            if (crear) {
+                try {
+                    result.createNewFile();
+                } catch (IOException ex) {
+                    Logger.getLogger(ProjecteLoteria.class.getName()).log(Level.SEVERE, null, ex);
+                    result = null;
+                }
+            } else {
+                result = null;
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Abre un fichero para lectura
+     *
+     * @param nomFichero Nombre del fichero
+     * @param crear Indica si queremos crear el fichero o no, en el caso que no
+     * exista
+     * @return BufferedReader apuntando al fichero
+     */
+    public static PrintWriter AbrirFicheroEscritura(String nomFichero, boolean crear) {
+        PrintWriter pw = null;
+        File f = AbrirFichero(nomFichero, crear);
+
+        if (f != null) {
+            // Declarar el writer para poder escribir en el fichero¡
+            FileWriter writer;
+            try {
+                writer = new FileWriter(f);
+                // PrintWriter para poder escribir más comodamente
+                pw = new PrintWriter(writer);
+            } catch (IOException ex) {
+                Logger.getLogger(ProjecteLoteria.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        return pw;
+    }
+    public static void CerrarFichero(PrintWriter pw) {
+        try (pw) {
+            pw.flush();
+        }
+    }
+
+    public static void EscribirFichero(String text, String any) {
+        // Creamos el enlace con el fichero en el disco
+        String nomFitxer = RUTA + any + EXTENSIO;
+        PrintWriter pw = AbrirFicheroEscritura(nomFitxer, true);
+        pw.println(text);
+
+        CerrarFichero(pw);
+    }
+
+// </editor-fold>
+
 // <editor-fold defaultstate="collapsed" desc="Binari">
     /**
      * Funcion que abre un fichero y, opcionalmente, lo crea si no existe
@@ -610,7 +687,7 @@ public class ProjecteLoteria {
      * @return File con el fichero que se ha abierto o null si no existe o no se
      * ha podido crear
      */
-    public static File AbrirFichero(String nomFichero, boolean crear) {
+    public static File AbrirFicheroSorteig(String nomFichero, boolean crear) {
         File result = null;
 
         result = new File(nomFichero);
@@ -663,7 +740,7 @@ public class ProjecteLoteria {
         return valor;
     }
 
-    public static void EscribirDatosCliente(Cliente c) {
+    public static void llegirDades(Cliente c) {
         System.out.println("Codi: " + c.codi);
         System.out.println("Nom: " + c.nom);
         System.out.println("Boleto: " + c.boleto);
@@ -704,8 +781,9 @@ public class ProjecteLoteria {
 
     public static void CerrarFicheroBinario(DataOutputStream dos) {
         try {
-            dos.flush();
-            dos.close();
+            try (dos) {
+                dos.flush();
+            }
         } catch (IOException ex) {
             Logger.getLogger(ProjecteLoteria.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -736,7 +814,7 @@ public class ProjecteLoteria {
 
         Cliente cli = LeerDatosClienteBinario(dis);
         while (cli != null) {
-            EscribirDatosCliente(cli);
+            llegirDades(cli);
             cli = LeerDatosClienteBinario(dis);
         }
 
