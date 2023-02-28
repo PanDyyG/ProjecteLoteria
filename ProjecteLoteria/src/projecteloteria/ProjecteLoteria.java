@@ -33,11 +33,12 @@ class Cliente {
 public class ProjecteLoteria {
     
 // <editor-fold defaultstate="collapsed" desc="Variables Globals">
+    //Declaració scanner
+    public static Scanner scan = new Scanner(System.in);
     
     public static final String RUTA = "./";
     public static final String EXTENSIO = ".txt";
     public static final String NOM_FTX_CLIENTS_BIN = "./clientes.bin";
-
     //Premis totals
     public static final int TOTALPREMIS = 1806;
 
@@ -53,11 +54,11 @@ public class ProjecteLoteria {
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String RESET = "\033[0m";
 
-    //Declaració scanner
-    public static Scanner scan = new Scanner(System.in);
+    
 // </editor-fold>
     
     //MAIN
+    public static String any;
     public static void main(String[] args) {
 
         int[] NumerosPremiados = ArrayPremiats();
@@ -69,7 +70,7 @@ public class ProjecteLoteria {
 
                 case 1: {   //Inicialitzacio funcions
                     System.out.println("Introdueix l'any");
-                    String any = scan.next();
+                    any = scan.next();
                     String sorteig = sorteigString(NumerosPremiados);
                     EscribirFichero(sorteig, any);
                     int BoletoInput = validarNumeroLoteria();
@@ -93,7 +94,7 @@ public class ProjecteLoteria {
                     opcionsColla();
                 }
                 break;
-                case 4: {   //Sortir del sorteig
+                case 0: {   //Sortir del sorteig
                     exit = menuSortida(exit);
                 }
             }
@@ -106,7 +107,7 @@ public class ProjecteLoteria {
         System.out.println("1. Consultar un numero");
         System.out.println("2. Consultar els numeros premiats");
         System.out.println("3. Consultar o afegir una colla");
-        System.out.println("4. Sortir del menu");
+        System.out.println("0. Sortir del menu");
         int opciones = LlegirNumeroEnter();
         return opciones;
     }
@@ -122,7 +123,7 @@ public class ProjecteLoteria {
                     LeerClientesBinario();
                     break;
                 case 3:
-                    LeerInformacioColla();
+                    LeerInformacioColla(any);
                     break;
             }
             opcion = mostrarMenuColla();
@@ -821,7 +822,7 @@ public static File AbrirFichero(String nomFichero, boolean crear) {
         CerrarFicheroBinario(dis);
     }
     
-    public static void LeerInformacioColla() {
+    public static void LeerInformacioColla(String any) {
         DataInputStream dis = AbrirFicheroLecturaBinario(NOM_FTX_CLIENTS_BIN, true);
         double contarPremi = 0;
         int contarClients = 0;
@@ -833,7 +834,7 @@ public static File AbrirFichero(String nomFichero, boolean crear) {
             contarDiners = contarDiners + cli.diners;
             cli = LeerDatosClienteBinario(dis);
         }
-        System.out.println(contarClients + " " + contarDiners + " " + contarPremi);
+        System.out.println("Any: " + any + " Membres: " + contarClients + " Diners Totals: " + contarDiners + " Premi Total: " + contarPremi);
         CerrarFicheroBinario(dis);
     }
     
