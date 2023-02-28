@@ -69,7 +69,7 @@ public class ProjecteLoteria {
             switch (opciones) { //CONSULTAR NUMERO
 
                 case 1: {   //Inicialitzacio funcions
-                    System.out.println("Introdueix l'any");
+                    System.out.println("Introdueix l'any del sorteig");
                     any = scan.next();
                     String sorteig = sorteigString(NumerosPremiados);
                     EscribirFichero(sorteig, any);
@@ -679,6 +679,61 @@ public static File AbrirFichero(String nomFichero, boolean crear) {
 
 // </editor-fold>
 
+// <editor-fold defaultstate="collapsed" desc="Guardar Sorteig en Binari">
+    public static DataOutputStream AbrirFicheroEscrituraSorteigBinario(String nomFichero, boolean crear, boolean blnAnyadir) {
+        DataOutputStream dos = null;
+        File f = AbrirFichero(nomFichero, crear);
+
+        if (f != null) {
+            // Declarar el writer para poder escribir en el fichero¡
+            FileOutputStream writer;
+            try {
+                writer = new FileOutputStream(f, blnAnyadir);
+                // PrintWriter para poder escribir más comodamente
+                dos = new DataOutputStream(writer);
+            } catch (IOException ex) {
+                Logger.getLogger(ProjecteLoteria.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        return dos;
+    }
+
+    public static void CerrarFicheroSorteigBinario(DataOutputStream dos) {
+        try {
+            try (dos) {
+                dos.flush();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(ProjecteLoteria.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+        public static void GrabarSorteigBinario() {
+        DataOutputStream dos = AbrirFicheroEscrituraBinario(NOM_FTX_CLIENTS_BIN, true, true);
+
+        Cliente cli = PedirDatosCliente();
+        while (cli != null) {
+            GrabarDatosClienteBinario(dos, cli);
+            cli = PedirDatosCliente();
+        }
+
+        CerrarFicheroBinario(dos);
+
+    }
+        
+    public static void GrabarDatosSorteigBinario(DataOutputStream dos, Cliente cli) {
+        try {
+            dos.writeInt(cli.codi);
+            dos.writeUTF(cli.nom);
+            dos.writeInt(cli.boleto);
+            dos.writeDouble(cli.diners);
+        } catch (IOException ex) {
+            Logger.getLogger(ProjecteLoteria.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+// </editor-fold>     
+    
 // <editor-fold defaultstate="collapsed" desc="Binari">
     /**
      * Funcion que abre un fichero y, opcionalmente, lo crea si no existe
@@ -869,11 +924,6 @@ public static File AbrirFichero(String nomFichero, boolean crear) {
             cli = null;
         }
         return cli;
-    }
-
-    public static void BorrarFichero(String filename) {
-        File f = new File(NOM_FTX_CLIENTS_BIN);
-        f.delete();
     }
           // </editor-fold>
 }
