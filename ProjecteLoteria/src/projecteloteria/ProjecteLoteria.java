@@ -220,10 +220,7 @@ public class ProjecteLoteria {
         return idioma;
     }
 
-    public static ResourceBundle cargarRecursos(String idioma) {
-        Locale locale = new Locale(idioma);
-        return ResourceBundle.getBundle("strings", locale);
-    }
+    
     // </editor-fold>
     
 // <editor-fold defaultstate="collapsed" desc="Premis + Loteria">
@@ -662,12 +659,24 @@ public static File AbrirFichero(String nomFichero, boolean crear) {
 
         return pw;
     }
+    
+    /**
+     * Cierra un fichero cuando es necessario
+     * 
+     * @param pw 
+     */
     public static void CerrarFichero(PrintWriter pw) {
         try (pw) {
             pw.flush();
         }
     }
 
+    /**
+     * Escribe en el fichero, el nombre del fichero y su contenido
+     * 
+     * @param text
+     * @param any 
+     */
     public static void EscribirFichero(String text, String any) {
         // Creamos el enlace con el fichero en el disco
         String nomFitxer = RUTA + any + EXTENSIO;
