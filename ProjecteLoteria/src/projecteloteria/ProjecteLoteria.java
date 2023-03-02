@@ -65,12 +65,7 @@ public class ProjecteLoteria {
         boolean exit = false; //MAIN MENU
         while (!exit) {
            
-            try {
-                menuOpcions(idiomaValido());
-
-            } catch (IOException ex) {
-                System.err.println("Error al cargar el archivo de idioma: " + ex.getMessage());
-            }
+            iniciarMenuOpciones();
             int opciones = scan.nextInt();
             switch (opciones) { //CONSULTAR NUMERO
                 case 1: {   //Inicialitzacio funcions
@@ -113,7 +108,15 @@ public class ProjecteLoteria {
         }
     }
 
-    
+    public static void iniciarMenuOpciones() {
+        try {
+            menuOpcions(idiomaValido());
+            
+        } catch (IOException ex) {
+            System.err.println("Error al cargar el archivo de idioma: " + ex.getMessage());
+        }
+    }
+
     public static void menuIdioma() {
         System.out.println("En quin idioma vols executar el programa, escriu la abreviatura?");
         System.out.println("1.ca");
