@@ -64,6 +64,7 @@ public class ProjecteLoteria {
 
         boolean exit = false; //MAIN MENU
         while (!exit) {
+           
             try {
                 menuOpcions(idiomaValido());
 
@@ -112,12 +113,14 @@ public class ProjecteLoteria {
         }
     }
 
+    
     public static void menuIdioma() {
         System.out.println("En quin idioma vols executar el programa, escriu la abreviatura?");
         System.out.println("1.ca");
         System.out.println("2.es");
     }
 
+   
     public static String idiomaValido() {
         String idioma = "";
         while (!idioma.equals("ca") && !idioma.equals("es")) {
@@ -127,6 +130,7 @@ public class ProjecteLoteria {
     }
 // <editor-fold defaultstate="collapsed" desc="Menus">
 
+    
     public static void menuOpcions(String nombreArchivo) throws IOException {
         ProjecteLoteria traductor = new ProjecteLoteria(nombreArchivo);
         System.out.println(traductor.paquete.getTraduccion("menuOpciones"));
@@ -976,7 +980,10 @@ public class ProjecteLoteria {
     }
     // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="Idioma">
+  
+    
+
+// <editor-fold defaultstate="collapsed" desc="Idioma">
     private PaqueteIdioma paquete;
 
     public ProjecteLoteria(String idioma) throws IOException {
