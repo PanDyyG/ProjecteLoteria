@@ -1,0 +1,5 @@
+menuOpcions1=-----------Menu de opciones-----------
+menuOpcions2=1. Consultar un numero
+menuOpcions3=2. Consultar los numeros premiados
+menuOpcions4=3. Consultar o añadir un grupo
+menuOpcions5=0. Salir del menu

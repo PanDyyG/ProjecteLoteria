@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Properties;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -55,18 +56,15 @@ public class ProjecteLoteria {
 // </editor-fold>
     //MAIN
     public static String any;
+    public static String idioma=menuIdioma();
 
     public static void main(String[] args) throws IOException {
 
-        menuIdioma();
-
         int[] NumerosPremiados = ArrayPremiats();
-
+        
         boolean exit = false; //MAIN MENU
         while (!exit) {
-           
-            iniciarMenuOpciones();
-            int opciones = scan.nextInt();
+            int opciones = menuOpcions(idioma);
             switch (opciones) { //CONSULTAR NUMERO
                 case 1: {   //Inicialitzacio funcions
                     System.out.println("Introdueix l'any del sorteig");
@@ -108,40 +106,16 @@ public class ProjecteLoteria {
         }
     }
 
-    public static void iniciarMenuOpciones() {
-        try {
-            menuOpcions(idiomaValido());
-            
-        } catch (IOException ex) {
-            System.err.println("Error al cargar el archivo de idioma: " + ex.getMessage());
-        }
-    }
-
-    public static void menuIdioma() {
-        System.out.println("En quin idioma vols executar el programa, escriu la abreviatura?");
-        System.out.println("1.ca");
-        System.out.println("2.es");
-    }
-
-   
-    public static String idiomaValido() {
-        String idioma = "";
-        while (!idioma.equals("ca") && !idioma.equals("es")) {
-            idioma = scan.nextLine();
-        }
-        return idioma;
-    }
 // <editor-fold defaultstate="collapsed" desc="Menus">
-
-    
-    public static void menuOpcions(String nombreArchivo) throws IOException {
-        ProjecteLoteria traductor = new ProjecteLoteria(nombreArchivo);
-        System.out.println(traductor.paquete.getTraduccion("menuOpciones"));
-        System.out.println(traductor.paquete.getTraduccion("menuCaso1"));
-        System.out.println(traductor.paquete.getTraduccion("menuCaso2"));
-        System.out.println(traductor.paquete.getTraduccion("menuCaso3"));
-        System.out.println(traductor.paquete.getTraduccion("menuCaso4"));
-
+    public static int menuOpcions(String frase) throws IOException {
+        traduccion multiIdioma = new traduccion(frase);
+        System.out.println(multiIdioma.getString("menuOpcions1"));
+        System.out.println(multiIdioma.getString("menuOpcions2"));;
+        System.out.println(multiIdioma.getString("menuOpcions3"));
+        System.out.println(multiIdioma.getString("menuOpcions4"));
+        System.out.println(multiIdioma.getString("menuOpcions5"));
+        int opciones = LlegirNumeroEnter();
+        return opciones;
     }
 
     public static void opcionsColla() {
@@ -169,8 +143,10 @@ public class ProjecteLoteria {
         System.out.println("3.- Consultar informació de la colla");
         System.out.println("0.- Sortir del menú de colles");
         System.out.print("Tria una opció:");
+
         opcion = scan.nextInt();
         scan.nextLine();
+
         return opcion;
     }
 
@@ -230,6 +206,40 @@ public class ProjecteLoteria {
     }
 
     // </editor-fold>
+// <editor-fold defaultstate="collapsed" desc="Idioma">
+    public static String menuIdioma() {
+        System.out.println("En quin idioma vols executar el programa, escriu la abreviatura?");
+        System.out.println("1.Catala");
+        System.out.println("2.Español");
+        String opciones = idiomaValido();
+        return opciones;
+
+    }
+
+    public static String idiomaValido() {
+        String idioma = "";
+        while (!idioma.equals("ca") && !idioma.equals("es")) {
+            idioma = scan.nextLine();
+            System.out.println("Introdueix una opcio valida: ");
+        }
+        return idioma;
+    }
+
+    public static class traduccion {
+
+        private Properties properties;
+
+        public traduccion(String idioma) throws FileNotFoundException, IOException {
+            properties = new Properties();
+            properties.load(new FileInputStream(idioma + ".txt"));
+        }
+
+        public String getString(String key) {
+            return properties.getProperty(key);
+        }
+    }
+    // </editor-fold>
+
 // <editor-fold defaultstate="collapsed" desc="Premis + Loteria">
     public static int[] ArrayPremiats() {
         //Dec array numerosPremiats
@@ -982,84 +992,4 @@ public class ProjecteLoteria {
         return cli;
     }
     // </editor-fold>
-
-  
-    
-
-// <editor-fold defaultstate="collapsed" desc="Idioma">
-    private PaqueteIdioma paquete;
-
-    public ProjecteLoteria(String idioma) throws IOException {
-        // cargar el archivo de texto correspondiente al idioma seleccionado
-        String nombreArchivo = idioma + ".txt";
-        BufferedReader lector = new BufferedReader(new FileReader(nombreArchivo));
-        String linea;
-        paquete = new PaqueteIdioma();
-        while ((linea = lector.readLine()) != null) {
-            if (linea.startsWith("#")) {
-                continue; // Ignorar líneas que empiezan con #
-            }
-            String[] partes = linea.split("=", 2);
-            if (partes.length >= 2) {
-                String clave = partes[0].trim();
-                String valor = partes[1].trim();
-                paquete.setTraduccion(clave, valor);
-            }
-        }
-        lector.close();
-    }
-
-    class PaqueteIdioma {
-
-        String menuCaso1;
-        String menuCaso2;
-        String menuCaso3;
-        String menuCaso4;
-        String menuOpciones;
-
-        public void setTraduccion(String clave, String valor) {
-            // asignar el valor de traducción correspondiente al campo correspondiente
-            switch (clave) {
-                case "menuOpciones":
-                    this.menuOpciones = valor;
-                    break;
-                case "menuCaso1":
-                    this.menuCaso1 = valor;
-                    break;
-                case "menuCaso2":
-                    this.menuCaso2 = valor;
-                    break;
-                case "menuCaso3":
-                    this.menuCaso3 = valor;
-                    break;
-                case "menuCaso4":
-                    this.menuCaso4 = valor;
-                    break;
-            }
-        }
-
-        public String getTraduccion(String clave) {
-            String traduccion = null;
-            switch (clave) {
-                case "menuOpciones":
-                    traduccion = this.menuOpciones;
-                    break;
-                case "menuCaso1":
-                    traduccion = this.menuCaso1;
-                    break;
-                case "menuCaso2":
-                    traduccion = this.menuCaso2;
-                    break;
-                case "menuCaso3":
-                    traduccion = this.menuCaso3;
-                    break;
-                case "menuCaso4":
-                    traduccion = this.menuCaso4;
-                    break;
-            }
-            return traduccion;
-
-        }
-    }
-    // </editor-fold> 
 }

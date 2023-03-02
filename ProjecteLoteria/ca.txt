@@ -1,0 +1,5 @@
+menuOpcions1=-----------Menu d'opcions-----------
+menuOpcions2=1. Consultar un numero
+menuOpcions3=2. Consultar els numeros premiats
+menuOpcions4=3. Consultar o afegir una colla
+menuOpcions5=0. Sortir del menu
