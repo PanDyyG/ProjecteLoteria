@@ -123,13 +123,13 @@ public class ProjecteLoteria {
         while (opcion != 0) {
             switch (opcion) {
                 case 1:
-                    GrabarClientesBinario();
+                    GrabarClientesBinario(frase);
                     break;
                 case 2:
-                    LeerClientesBinario();
+                    LeerClientesBinario(frase);
                     break;
                 case 3:
-                    LeerInformacioColla(any);
+                    LeerInformacioColla(any,frase);
                     break;
             }
             opcion = mostrarMenuColla(frase);
@@ -889,13 +889,13 @@ public class ProjecteLoteria {
         System.out.println(multiIdioma.getString("llegirDades4")+" " + c.diners);
     }
 
-    public static void GrabarClientesBinario() {
+    public static void GrabarClientesBinario(String frase) throws IOException {
         DataOutputStream dos = AbrirFicheroEscrituraSorteigBinario(NOM_FTX_CLIENTS_BIN, true, true);
 
-        Cliente cli = PedirDatosCliente();
+        Cliente cli = PedirDatosCliente(frase);
         while (cli != null) {
             GrabarDatosClienteBinario(dos, cli);
-            cli = PedirDatosCliente();
+            cli = PedirDatosCliente(frase);
         }
 
         CerrarFicheroBinario(dos);
@@ -932,12 +932,12 @@ public class ProjecteLoteria {
 
     }
 
-    public static void LeerClientesBinario() {
+    public static void LeerClientesBinario(String frase) throws IOException {
         DataInputStream dis = AbrirFicheroLecturaBinario(NOM_FTX_CLIENTS_BIN, true);
 
         Cliente cli = LeerDatosClienteBinario(dis);
         while (cli != null) {
-            llegirDades(cli);
+            llegirDades(cli, frase);
             cli = LeerDatosClienteBinario(dis);
         }
 
