@@ -56,12 +56,12 @@ public class ProjecteLoteria {
 // </editor-fold>
     //MAIN
     public static String any;
-    public static String idioma=menuIdioma();
+    public static String idioma = menuIdioma();
 
     public static void main(String[] args) throws IOException {
 
         int[] NumerosPremiados = ArrayPremiats();
-        
+
         boolean exit = false; //MAIN MENU
         while (!exit) {
             int opciones = menuOpcions(idioma);
@@ -78,7 +78,7 @@ public class ProjecteLoteria {
                         System.out.println("Ja existeix un sorteig per aquest any.");
                         NumerosPremiados = numerosExistentes;
                     }
-                    int BoletoInput = validarNumeroLoteria();
+                    int BoletoInput = validarNumeroLoteria(idioma);
                     int posicio = ValidarNumero(NumerosPremiados, BoletoInput);
                     int reintegro = Reintegro(BoletoInput, NumerosPremiados);
                     int numAntIpost = NumAntIpost(BoletoInput, NumerosPremiados);
@@ -87,20 +87,20 @@ public class ProjecteLoteria {
                     int[] ArrayPremiAdicional = arrayAproximacions(reintegro, numAntIpost, ultimasDosCifras, centenas);
                     int premiAddicional = PremiAddicional(ArrayPremiAdicional);
                     int premiAconseguit = Premi(posicio);
-                    if (menuPremiAconseguit(premiAconseguit, posicio, BoletoInput, premiAddicional, ArrayPremiAdicional)) {
+                    if (menuPremiAconseguit(premiAconseguit, posicio, BoletoInput, premiAddicional, ArrayPremiAdicional, idioma)) {
                         break;
                     }
                 }
                 case 2: {   //Consulta tots els premis
-                    imprimirPremisGrans(NumerosPremiados);
+                    imprimirPremisGrans(NumerosPremiados, idioma);
                 }
                 break;
                 case 3: {   //Colla
-                    opcionsColla();
+                    opcionsColla(idioma);
                 }
                 break;
                 case 0: {   //Sortir del sorteig
-                    exit = menuSortida(exit);
+                    exit = menuSortida(exit, idioma);
                 }
             }
         }
@@ -114,12 +114,12 @@ public class ProjecteLoteria {
         System.out.println(multiIdioma.getString("menuOpcions3"));
         System.out.println(multiIdioma.getString("menuOpcions4"));
         System.out.println(multiIdioma.getString("menuOpcions5"));
-        int opciones = LlegirNumeroEnter();
+        int opciones = LlegirNumeroEnter(frase);
         return opciones;
     }
 
-    public static void opcionsColla() {
-        int opcion = mostrarMenuColla();
+    public static void opcionsColla(String frase) throws IOException {
+        int opcion = mostrarMenuColla(frase);
         while (opcion != 0) {
             switch (opcion) {
                 case 1:
@@ -132,47 +132,47 @@ public class ProjecteLoteria {
                     LeerInformacioColla(any);
                     break;
             }
-            opcion = mostrarMenuColla();
+            opcion = mostrarMenuColla(frase);
         }
     }
 
-    public static int mostrarMenuColla() {
+    public static int mostrarMenuColla(String frase) throws IOException {
+        traduccion multiIdioma = new traduccion(frase);
         int opcion;
-        System.out.println("1.- Afegir un client a la colla");
-        System.out.println("2.- Consultar els clients de la colla");
-        System.out.println("3.- Consultar informació de la colla");
-        System.out.println("0.- Sortir del menú de colles");
-        System.out.print("Tria una opció:");
-
+        System.out.println(multiIdioma.getString("mostrarMenuColla1"));
+        System.out.println(multiIdioma.getString("mostrarMenuColla2"));
+        System.out.println(multiIdioma.getString("mostrarMenuColla3"));
+        System.out.println(multiIdioma.getString("mostrarMenuColla4"));
         opcion = scan.nextInt();
         scan.nextLine();
 
         return opcion;
     }
 
-    public static boolean menuSortida(boolean exit) {
+    public static boolean menuSortida(boolean exit, String frase) throws IOException {
+        traduccion multiIdioma = new traduccion(frase);
         int menuSortida;
         System.out.println();
-        System.out.println("Vols rebre mes informacio sobre el sorteig de nadal?");
-        System.out.println("1.Si");
-        System.out.println("2.No");
-        menuSortida = validarNumeroEnter();
+        System.out.println(multiIdioma.getString("menuSortida1"));
+        System.out.println("menuSortida2");
+        System.out.println("menuSortida3");
+        menuSortida = validarNumeroEnter(frase);
         if (menuSortida == 2) {
             exit = true;
         }
         return exit;
     }
 
-    public static boolean menuPremiAconseguit(int premiAconseguit, int posicio, int BoletoInput, int premiAddicional, int[] ArrayPremiAdicional) {
+    public static boolean menuPremiAconseguit(int premiAconseguit, int posicio, int BoletoInput, int premiAddicional, int[] ArrayPremiAdicional, String frase) throws IOException {
         boolean sortir = false;
         if (premiAconseguit >= 0) {
             if (posicio >= 0) {  //Menu de premi de bolet
-                int premi = textBoletPremiat();
+                int premi = textBoletPremiat(frase);
                 while (!sortir) {
                     switch (premi) {
                         case 1: {
                             //Mostra el text amb els premis corresponents
-                            TextGuanyador(premiAconseguit, BoletoInput, premiAddicional, ArrayPremiAdicional);
+                            TextGuanyador(premiAconseguit, BoletoInput, premiAddicional, ArrayPremiAdicional, frase);
                             sortir = true;
                         }
                         case 2:
@@ -180,7 +180,7 @@ public class ProjecteLoteria {
                     }
                 }
             } else {
-                imprimirAproximacions(premiAddicional, posicio, ArrayPremiAdicional);
+                imprimirAproximacions(premiAddicional, posicio, ArrayPremiAdicional, frase);
             }
             System.out.println();  //Salt de línia
             sortir = true;
@@ -188,29 +188,31 @@ public class ProjecteLoteria {
         return sortir;
     }
 
-    public static int textBoletPremiat() {
-        System.out.println(ANSI_GREEN + "Enhorabona, el bolet esta premiat!!" + RESET);
-        System.out.println("Vols saber el seu premi?");
-        System.out.println("1. Si");
-        System.out.println("2. No");
+    public static int textBoletPremiat(String frase) throws IOException {
+        traduccion multiIdioma = new traduccion(frase);
+        System.out.println(ANSI_GREEN + multiIdioma.getString("textBoletPremiat") + " " + RESET);
+        System.out.println(multiIdioma.getString("textMenuAproximacions2"));
+        System.out.println(multiIdioma.getString("menuSortida2"));
+        System.out.println(multiIdioma.getString("menuSortida2"));
         //Variable per elegir el cas del següent switch
-        int premi = validarNumeroEnter();
+        int premi = validarNumeroEnter(frase);
         return premi;
     }
 
-    public static void textMenuAproximacions() {
-        System.out.println(ANSI_GREEN + ", pero has rebut un premi addicional!!" + RESET);
-        System.out.println("Vols saber el seu premi?");
-        System.out.println("1. Si");
-        System.out.println("2. No");
+    public static void textMenuAproximacions(String frase) throws IOException {
+        traduccion multiIdioma = new traduccion(frase);
+        System.out.println(ANSI_GREEN + multiIdioma.getString("textMenuAproximacions1") + " " + RESET);
+        System.out.println(multiIdioma.getString("textMenuAproximacions2"));
+        System.out.println(multiIdioma.getString("menuSortida2"));
+        System.out.println(multiIdioma.getString("menuSortida3"));
     }
 
     // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="Idioma">
     public static String menuIdioma() {
         System.out.println("En quin idioma vols executar el programa, escriu la abreviatura?");
-        System.out.println("1.Catala");
-        System.out.println("2.Español");
+        System.out.println("ca=Catala");
+        System.out.println("es=Español");
         String opciones = idiomaValido();
         return opciones;
 
@@ -219,8 +221,9 @@ public class ProjecteLoteria {
     public static String idiomaValido() {
         String idioma = "";
         while (!idioma.equals("ca") && !idioma.equals("es")) {
+            System.out.print("Introdueix una opcio valida: ");
             idioma = scan.nextLine();
-            System.out.println("Introdueix una opcio valida: ");
+
         }
         return idioma;
     }
@@ -248,11 +251,12 @@ public class ProjecteLoteria {
         return NumerosPremiados;
     }
 
-    public static int LlegirNumeroEnter() {
+    public static int LlegirNumeroEnter(String frase) throws IOException {
+        traduccion multiIdioma = new traduccion(frase);
         boolean entradaIncorrecta = true;
         int num = 0;
         while (entradaIncorrecta) {
-            System.out.print("Introdueix una opcio valida: ");
+            System.out.print(multiIdioma.getString("validar"));
             if (scan.hasNextInt()) {
                 num = scan.nextInt();
                 entradaIncorrecta = false;
@@ -263,11 +267,13 @@ public class ProjecteLoteria {
         return num;
     }
 
-    public static int validarNumeroEnter() {
+    public static int validarNumeroEnter(String frase) throws IOException {
+        traduccion multiIdioma = new traduccion(frase);
         boolean entradaIncorrecta = true;
         int num = 0;
         while (entradaIncorrecta) {
-            System.out.print("Introdueix una opcio valida: ");
+            System.out.print(multiIdioma.getString("validar"));
+
             if (scan.hasNextInt()) {
                 num = scan.nextInt();
                 if (num == 1 || num == 2) {
@@ -280,31 +286,33 @@ public class ProjecteLoteria {
         return num;
     }
 
-    public static void imprimirAproximacions(int premiAddicional, int posicio, int[] ArrayPremiAdicional) {
+    public static void imprimirAproximacions(int premiAddicional, int posicio, int[] ArrayPremiAdicional, String frase) throws IOException {
         //en cas de rebre premis adicionals i no rebre cap premi gran ni pedrea
-        System.out.print(ANSI_RED + "El teu bolet no esta premiat!" + RESET);
+        traduccion multiIdioma = new traduccion(frase);
+        System.out.print(ANSI_RED + multiIdioma.getString("imprimirAproximacions1") + " " + RESET);
         //Si el premi és major a 0, pero la posició no correpon a cap premi de sèrie entra
         if (premiAddicional > 0 && posicio == -1) {
-            textMenuAproximacions();
-            int premiAdd = validarNumeroEnter(); //Variable per elegir el cas del següent switch
+            textMenuAproximacions(frase);
+            int premiAdd = validarNumeroEnter(frase); //Variable per elegir el cas del següent switch
             boolean sortirAdd = false;
             while (!sortirAdd) {
                 switch (premiAdd) {
                     case 1: {
                         //Mostra tots els premis adicionals aconseguits
-                        System.out.println("Total premis en Aproximacions: " + ANSI_GREEN + premiAddicional + "€" + RESET);
-                        imprimeixPremisAddicionals(ArrayPremiAdicional);
+                        System.out.println(multiIdioma.getString("imprimirAproximacions2") + " " + ANSI_GREEN + premiAddicional + multiIdioma.getString("correcioZeros3") + " " + RESET);
+                        imprimeixPremisAddicionals(ArrayPremiAdicional, frase);
                         sortirAdd = true;
                     }
                     case 2:
-                        sortirAdd = true;   //Surt del switch
+                        sortirAdd = true;
+                    //Surt del switch
                 }
             }
 
         }
     }
 
-    public static void imprimirPremisGrans(int[] NumerosPremiados) {
+    public static void imprimirPremisGrans(int[] NumerosPremiados, String frase) throws IOException {
         //Print de numeros Premiats
 
         for (int i = 0; i < NumerosPremiados.length; i++) {
@@ -315,40 +323,41 @@ public class ProjecteLoteria {
                 i = 1805;
             }
 
-            correcioZeros(NumerosPremiados, i);
+            correcioZeros(NumerosPremiados, i, frase);
 
         }
     }
 
-    public static void correcioZeros(int[] NumerosPremiados, int i) {
+    public static void correcioZeros(int[] NumerosPremiados, int i, String frase) throws IOException {
         /*Amb aquesta linea situarem zeros a la esquerra del
         numero INT generat com a bolet per a que sigui del tamany desitjat,
         String.format "%05d" ens permetra agregar Zeros a la esquerra fins a un
         tamany de numero de 5 digis, en base decimal.*/
+        traduccion multiIdioma = new traduccion(frase);
         String CorrecionZero = String.format("%05d", NumerosPremiados[i]);
         //Mostra els boletos premiats
-        System.out.println("Numero de boleto: " + CorrecionZero + " Premi: " + Premi(i) + "€");
+        System.out.println(multiIdioma.getString("correcioZeros1") + " " + CorrecionZero + multiIdioma.getString("correcioZeros2") + " " + Premi(i) + multiIdioma.getString("correcioZeros3") + " ");
     }
 
-    public static int validarNumeroLoteria() {
-
+    public static int validarNumeroLoteria(String frase) throws IOException {
+        traduccion multiIdioma = new traduccion(frase);
         int valor;
-        System.out.print("Introdueix el teu numero de la loteria: ");
+        System.out.print(multiIdioma.getString("validarNumeroLoteria"));
         while (!scan.hasNextInt()) {
             scan.next();
-            System.out.print("Introdueix el teu numero de la loteria: ");
+            System.out.print(multiIdioma.getString("validarNumeroLoteria"));
         }
         valor = scan.nextInt();
         return valor;
     }
 
-    public static int validarNumeroAny() {
-
+    public static int validarNumeroAny(String frase) throws IOException {
+        traduccion multiIdioma = new traduccion(frase);
         int valor;
-        System.out.print("Introdueix l'any del sorteig de la loteria: ");
+        System.out.print(multiIdioma.getString("validarNumeroAny"));
         while (!scan.hasNextInt()) {
             scan.next();
-            System.out.print("Introdueix l'any del sorteig de la loteria: ");
+            System.out.print(multiIdioma.getString("validarNumeroAny"));
         }
         valor = scan.nextInt();
         return valor;
@@ -438,38 +447,38 @@ public class ProjecteLoteria {
      * @param BoletoInput, es el numero introduit per teclat a consultar Treu
      * per pantalla una informació completa dels premis que hagis guanyat
      */
-    public static void TextGuanyador(int premi, int BoletoInput, int PremiAdicional, int[] ArrayPremiAdicional) {
-
+    public static void TextGuanyador(int premi, int BoletoInput, int PremiAdicional, int[] ArrayPremiAdicional, String frase) throws IOException {
+        traduccion multiIdioma = new traduccion(frase);
         System.out.println();
-        System.out.print("Felicitats! T'ha tocat");
+        System.out.print(multiIdioma.getString("TextGuanyador1") + " ");
 
         int premiDecim = 0;
 
         if (premi == PREMIGORDO) {
             premiDecim = 328000;
-            System.out.print(" el primer premi.");
+            System.out.print(multiIdioma.getString("TextGuanyador2") + " ");
         } else if (premi == SEGONPREMI) {
             premiDecim = 108000;
-            System.out.print(" el segon premi.");
+            System.out.print(multiIdioma.getString("TextGuanyador3") + " ");
         } else if (premi == TERCERPREMI) {
             premiDecim = 48000;
-            System.out.print(" el tercer premi.");
+            System.out.print(multiIdioma.getString("TextGuanyador4") + " ");
         } else if (premi == QUARTPREMI) {
             premiDecim = 20000;
-            System.out.print(" el quart premi.");
+            System.out.print(multiIdioma.getString("TextGuanyador5") + " ");
         } else if (premi == CINQUEPREMI) {
             premiDecim = 6000;
-            System.out.print(" el cinque premi.");
+            System.out.print(multiIdioma.getString("TextGuanyador6") + " ");
         } else if (premi == PEDREA) {
             premiDecim = 100;
-            System.out.print(" la pedrea.");
+            System.out.print(multiIdioma.getString("TextGuanyador7") + " ");
         }
         System.out.println("");
-        System.out.print("El numero " + BoletoInput
-                + " ha sigut premiat amb un total de: " + ANSI_GREEN + premi + "€" + RESET + " per serie i has guanyat " + ANSI_GREEN + premiDecim + "€" + RESET);
+        System.out.print(multiIdioma.getString("TextGuanyador8") + " " + BoletoInput + " "
+                + multiIdioma.getString("TextGuanyador9") + " " + ANSI_GREEN + premi + multiIdioma.getString("correcioZeros3") + " " + RESET + multiIdioma.getString("TextGuanyador10") + " " + ANSI_GREEN + premiDecim + multiIdioma.getString("correcioZeros3") + RESET);
         if (PremiAdicional > 0 && premi == 0) {
-            System.out.println(ANSI_GREEN + " i un premi addicional de : " + PremiAdicional + "€" + RESET);
-            imprimeixPremisAddicionals(ArrayPremiAdicional);
+            System.out.println(ANSI_GREEN + multiIdioma.getString("TextGuanyador11") + " " + PremiAdicional + multiIdioma.getString("correcioZeros3") + RESET);
+            imprimeixPremisAddicionals(ArrayPremiAdicional, frase);
         }
     }
 
@@ -595,30 +604,32 @@ public class ProjecteLoteria {
      *
      * @param ArrayPremisADD, la funció on hem guardat tots els posibles premis
      * d'aproximació
+     * @param frase
+     * @throws java.io.IOException
      */
-    public static void imprimeixPremisAddicionals(int[] ArrayPremisADD) {
-
+    public static void imprimeixPremisAddicionals(int[] ArrayPremisADD, String frase) throws IOException {
+        traduccion multiIdioma = new traduccion(frase);
         System.out.println();
 
         if (ArrayPremisADD[0] > 0) {
-            System.out.println("Has rebut " + ANSI_GREEN + ArrayPremisADD[0] + "€" + RESET + " de el Reintegro");
+            System.out.println(multiIdioma.getString("imprimeixPremisAddicionals1") + " " + ANSI_GREEN + ArrayPremisADD[0] + multiIdioma.getString("correcioZeros3") + " " + RESET + multiIdioma.getString("imprimeixPremisAddicionals2") + " ");
         }
         if (ArrayPremisADD[1] > 0) {
-            System.out.print("Has rebut " + ANSI_GREEN + ArrayPremisADD[1] + "€" + RESET + " de el Numero anterior o posterior al ");
+            System.out.print(multiIdioma.getString("imprimeixPremisAddicionals1") + " " + ANSI_GREEN + ArrayPremisADD[1] + multiIdioma.getString("correcioZeros3") + " " + RESET + multiIdioma.getString("imprimeixPremisAddicionals3") + " ");
 
             if (ArrayPremisADD[1] == 2000) {
-                System.out.println("primer premi.");
+                System.out.println(multiIdioma.getString("TextGuanyador2") + " ");
             } else if (ArrayPremisADD[1] == 1250) {
-                System.out.println("segon premi.");
+                System.out.println(multiIdioma.getString("TextGuanyador3") + " ");
             } else if (ArrayPremisADD[1] == 960) {
-                System.out.println("tercer premi.");
+                System.out.println(multiIdioma.getString("TextGuanyador4") + " ");
             }
         }
         if (ArrayPremisADD[2] > 0) {
-            System.out.println("Has rebut " + ANSI_GREEN + ArrayPremisADD[2] + "€" + RESET + " de el Centena de un dels primers 4 premis");
+            System.out.println(multiIdioma.getString("imprimeixPremisAddicionals1") + " " + ANSI_GREEN + ArrayPremisADD[2] + multiIdioma.getString("correcioZeros3") + " " + RESET + multiIdioma.getString("imprimeixPremisAddicionals4") + " ");
         }
         if (ArrayPremisADD[3] > 0) {
-            System.out.println("Has rebut " + ANSI_GREEN + ArrayPremisADD[3] + "€" + RESET + " de el Ultimes dues xifres d'un dels primers 3 premis");
+            System.out.println(multiIdioma.getString("imprimeixPremisAddicionals1") + " " + ANSI_GREEN + ArrayPremisADD[3] + multiIdioma.getString("correcioZeros3") + " " + RESET + multiIdioma.getString("imprimeixPremisAddicionals5") + " ");
         }
 
     }// </editor-fold>
@@ -835,40 +846,47 @@ public class ProjecteLoteria {
         return scan.nextLine();
     }
 
-    public static Cliente PedirDatosCliente() {
+    public static Cliente PedirDatosCliente(String frase) throws IOException {
+        traduccion multiIdioma = new traduccion(frase);
         Cliente c = new Cliente();
-        System.out.print("Codi: ");
+        System.out.print(multiIdioma.getString("validarDinersFicats")+" ");
         c.codi = scan.nextInt();
         scan.nextLine();
         if (c.codi != 0) {
-            System.out.print("Nom: ");
+            System.out.print(multiIdioma.getString("validarDinersFicats")+" ");
             c.nom = scan.nextLine();
-            System.out.print("Boleto: ");
+            System.out.print(multiIdioma.getString("validarDinersFicats")+" ");
             c.boleto = scan.nextInt();
-            System.out.print("Diners ficats: ");
-            c.diners = validarDinersFicats();
-            System.out.println("Client agregat correctament");
+            System.out.print(multiIdioma.getString("validarDinersFicats")+" ");
+            c.diners = validarDinersFicats(frase);
+            System.out.println(multiIdioma.getString("validarDinersFicats")+" ");
         } else {
             c = null;
         }
         return c;
     }
 
-    public static double validarDinersFicats() {
-
+    /**
+     *
+     * @param frase
+     * @return
+     */
+    public static double validarDinersFicats(String frase) throws IOException {
+    traduccion multiIdioma = new traduccion(frase);
         Double valor = scan.nextDouble();
         while (!scan.hasNextInt() || valor > 60 || valor % 5 != 0) {
-            System.out.print("Els diners no són vàlids. Torna a provar: ");
+            System.out.print(multiIdioma.getString("validarDinersFicats")+" ");
             valor = scan.nextDouble();
         }
         return valor;
     }
 
-    public static void llegirDades(Cliente c) {
-        System.out.println("Codi: " + c.codi);
-        System.out.println("Nom: " + c.nom);
-        System.out.println("Boleto: " + c.boleto);
-        System.out.println("Diners: " + c.diners);
+    public static void llegirDades(Cliente c, String frase) throws IOException {
+        traduccion multiIdioma = new traduccion(frase);
+        System.out.println(multiIdioma.getString("llegirDades1")+" " + c.codi);
+        System.out.println(multiIdioma.getString("llegirDades2")+" " + c.nom);
+        System.out.println(multiIdioma.getString("llegirDades3")+" " + c.boleto);
+        System.out.println(multiIdioma.getString("llegirDades4")+" " + c.diners);
     }
 
     public static void GrabarClientesBinario() {
@@ -926,7 +944,8 @@ public class ProjecteLoteria {
         CerrarFicheroBinario(dis);
     }
 
-    public static void LeerInformacioColla(String any) {
+    public static void LeerInformacioColla(String any, String frase) throws IOException {
+        traduccion multiIdioma = new traduccion(frase);
         DataInputStream dis = AbrirFicheroLecturaBinario(NOM_FTX_CLIENTS_BIN, true);
         double contarPremi = 0;
         int contarClients = 0;
@@ -938,7 +957,7 @@ public class ProjecteLoteria {
             contarDiners = contarDiners + cli.diners;
             cli = LeerDatosClienteBinario(dis);
         }
-        System.out.println("Any: " + any + " Membres: " + contarClients + " Diners Totals: " + contarDiners + " Premi Total: " + contarPremi);
+        System.out.println(multiIdioma.getString("LeerInformacioColla1") + " " + any + multiIdioma.getString("LeerInformacioColla2") + " " + contarClients + multiIdioma.getString("LeerInformacioColla3") + " " + contarDiners + multiIdioma.getString("LeerInformacioColla4") + " " + contarPremi);
         CerrarFicheroBinario(dis);
     }
 
