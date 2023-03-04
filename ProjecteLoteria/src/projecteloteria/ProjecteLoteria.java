@@ -61,7 +61,7 @@ public class ProjecteLoteria {
     public static void main(String[] args) throws IOException {
 
         int[] NumerosPremiados = ArrayPremiats();
-
+        boolean continuarPrograma = true;
         boolean exit = false; //MAIN MENU
         while (!exit) {
             int opciones = menuOpcions(idioma);
@@ -79,8 +79,9 @@ public class ProjecteLoteria {
                     int premiAddicional = PremiAddicional(ArrayPremiAdicional);
                     int premiAconseguit = Premi(posicio);
                     if (menuPremiAconseguit(premiAconseguit, posicio, BoletoInput, premiAddicional, ArrayPremiAdicional, idioma)) {
-                        break;
+                        continuarPrograma = false;
                     }
+                break;
                 }
                 case 2: {   //Consulta tots els premis
                     imprimirPremisGrans(NumerosPremiados, idioma);
@@ -93,6 +94,9 @@ public class ProjecteLoteria {
                 case 0: {   //Sortir del sorteig
                     exit = menuSortida(exit, idioma);
                 }
+            }
+            if (!continuarPrograma) {
+                //codi per finalitzar el programa de la condició del case 1
             }
         }
     }
