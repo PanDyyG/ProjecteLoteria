@@ -81,7 +81,7 @@ public class ProjecteLoteria {
                     if (menuPremiAconseguit(premiAconseguit, posicio, BoletoInput, premiAddicional, ArrayPremiAdicional, idioma)) {
                         continuarPrograma = false;
                     }
-                break;
+                    break;
                 }
                 case 2: {   //Consulta tots els premis
                     imprimirPremisGrans(NumerosPremiados, idioma);
@@ -201,8 +201,9 @@ public class ProjecteLoteria {
         int menuSortida;
         System.out.println();
         System.out.println(multiIdioma.getString("menuSortida1"));
-        System.out.println("menuSortida2");
-        System.out.println("menuSortida3");
+        System.out.println(multiIdioma.getString("menuSortida2"));
+        System.out.println(multiIdioma.getString("menuSortida3"));
+
         menuSortida = validarNumeroEnter(frase);
         if (menuSortida == 2) {
             exit = true;
@@ -280,7 +281,6 @@ public class ProjecteLoteria {
     }
 
     // </editor-fold>
-    
 // <editor-fold defaultstate="collapsed" desc="Idioma">
     /**
      * Text menu idioma
@@ -908,7 +908,6 @@ public class ProjecteLoteria {
     }
 
 // </editor-fold>
-    
 // <editor-fold defaultstate="collapsed" desc="Colles">
     /**
      * Funcio que obra un fitxer o el crea si no existeix
@@ -969,17 +968,19 @@ public class ProjecteLoteria {
 
     /**
      * Funció per demanar una linia de text per teclat
-     * @return 
+     *
+     * @return
      */
     public static String PedirLineaTeclado() {
         return scan.nextLine();
     }
-    
+
     /**
      * Funció per demanar les dades de cada client de la colla
+     *
      * @param frase
      * @return
-     * @throws IOException 
+     * @throws IOException
      */
     public static Cliente PedirDatosCliente(String frase) throws IOException {
         traduccion multiIdioma = new traduccion(frase);
@@ -1003,9 +1004,10 @@ public class ProjecteLoteria {
 
     /**
      * Validar els diners introdüits.
+     *
      * @param frase
      * @return Retorna el valor correcta
-     * @throws IOException 
+     * @throws IOException
      */
     public static double validarDinersFicats(String frase) throws IOException {
         traduccion multiIdioma = new traduccion(frase);
@@ -1016,12 +1018,13 @@ public class ProjecteLoteria {
         }
         return valor;
     }
-    
+
     /**
      * Mostra per pantalla les dades de cada client.
+     *
      * @param c
      * @param frase
-     * @throws IOException 
+     * @throws IOException
      */
     public static void llegirDades(Cliente c, String frase) throws IOException {
         traduccion multiIdioma = new traduccion(frase);
@@ -1030,11 +1033,12 @@ public class ProjecteLoteria {
         System.out.println(multiIdioma.getString("llegirDades3") + " " + c.boleto);
         System.out.println(multiIdioma.getString("llegirDades4") + " " + c.diners);
     }
-    
+
     /**
      * Guarda les dades introdüides anteriorment.
+     *
      * @param frase
-     * @throws IOException 
+     * @throws IOException
      */
     public static void GrabarClientesBinario(String frase) throws IOException {
         DataOutputStream dos = AbrirFicheroEscrituraSorteigBinario(NOM_FTX_CLIENTS_BIN, true, true);
@@ -1048,10 +1052,11 @@ public class ProjecteLoteria {
         CerrarFicheroBinario(dos);
 
     }
-    
+
     /**
      * Tanca correctament el fitxer binari.
-     * @param dos 
+     *
+     * @param dos
      */
     public static void CerrarFicheroBinario(DataOutputStream dos) {
         try {
@@ -1062,10 +1067,11 @@ public class ProjecteLoteria {
             Logger.getLogger(ProjecteLoteria.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
      * Tanca correctament el fitxer binari.
-     * @param dis 
+     *
+     * @param dis
      */
     public static void CerrarFicheroBinario(DataInputStream dis) {
         try {
@@ -1074,11 +1080,12 @@ public class ProjecteLoteria {
             Logger.getLogger(ProjecteLoteria.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
      * Esciure en el fitxer binari les dades introdüides.
+     *
      * @param dos
-     * @param cli 
+     * @param cli
      */
     public static void GrabarDatosClienteBinario(DataOutputStream dos, Cliente cli) {
         try {
@@ -1091,11 +1098,12 @@ public class ProjecteLoteria {
         }
 
     }
-    
+
     /**
      * Llegeix les dades del client.
+     *
      * @param frase
-     * @throws IOException 
+     * @throws IOException
      */
     public static void LeerClientesBinario(String frase) throws IOException {
         DataInputStream dis = AbrirFicheroLecturaBinario(NOM_FTX_CLIENTS_BIN, true);
@@ -1108,12 +1116,13 @@ public class ProjecteLoteria {
 
         CerrarFicheroBinario(dis);
     }
-    
+
     /**
      * Llegeix les dades de tota la colla junta.
+     *
      * @param any
      * @param frase
-     * @throws IOException 
+     * @throws IOException
      */
     public static void LeerInformacioColla(String any, String frase) throws IOException {
         traduccion multiIdioma = new traduccion(frase);
@@ -1131,12 +1140,13 @@ public class ProjecteLoteria {
         System.out.println(multiIdioma.getString("LeerInformacioColla1") + " " + any + multiIdioma.getString("LeerInformacioColla2") + " " + contarClients + multiIdioma.getString("LeerInformacioColla3") + " " + contarDiners + multiIdioma.getString("LeerInformacioColla4") + " " + contarPremi);
         CerrarFicheroBinario(dis);
     }
-    
+
     /**
      * Obra el fitxer per llegir el binari.
+     *
      * @param nomFichero
      * @param crear
-     * @return 
+     * @return
      */
     public static DataInputStream AbrirFicheroLecturaBinario(String nomFichero, boolean crear) {
         DataInputStream dis = null;
@@ -1155,12 +1165,13 @@ public class ProjecteLoteria {
         }
         return dis;
     }
-    
+
     /**
      * Obra el fitxer binari.
+     *
      * @param nomFichero
      * @param crear
-     * @return 
+     * @return
      */
     public static File abrirFichero(String nomFichero, boolean crear) {
         File result = new File(nomFichero);
@@ -1178,11 +1189,12 @@ public class ProjecteLoteria {
         }
         return result;
     }
-    
+
     /**
      * Llegeix els clients en el fitxer binari.
+     *
      * @param dis
-     * @return 
+     * @return
      */
     public static Cliente LeerDatosClienteBinario(DataInputStream dis) {
         Cliente cli = new Cliente();
