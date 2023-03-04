@@ -67,7 +67,7 @@ public class ProjecteLoteria {
             int opciones = menuOpcions(idioma);
             switch (opciones) { //CONSULTAR NUMERO
                 case 1: {
-                            //Inicialitzacio funcions
+                    //Inicialitzacio funcions
                     NumerosPremiados = comprovaAnyExistent(idioma);
                     int BoletoInput = validarNumeroLoteria(idioma);
                     int posicio = ValidarNumero(NumerosPremiados, BoletoInput);
@@ -97,8 +97,14 @@ public class ProjecteLoteria {
         }
     }
 
-   
 // <editor-fold defaultstate="collapsed" desc="Menus">
+    /**
+     * Menu d'opcions prinicpal
+     *
+     * @param frase
+     * @return
+     * @throws IOException
+     */
     public static int menuOpcions(String frase) throws IOException {
         traduccion multiIdioma = new traduccion(frase);
         System.out.println(multiIdioma.getString("menuOpcions1"));
@@ -112,9 +118,10 @@ public class ProjecteLoteria {
 
     /**
      * Inicialitza la comprovacio per si existeix un fitxer amb el any demanat
+     *
      * @param frase
      * @return
-     * @throws IOException 
+     * @throws IOException
      */
     public static int[] comprovaAnyExistent(String frase) throws IOException {
         int[] NumerosPremiados;
@@ -132,7 +139,13 @@ public class ProjecteLoteria {
         }
         return NumerosPremiados;
     }
-    
+
+    /**
+     * Opcions que es poden realitzar sobre la colla
+     *
+     * @param frase
+     * @throws IOException
+     */
     public static void opcionsColla(String frase) throws IOException {
         int opcion = mostrarMenuColla(frase);
         while (opcion != 0) {
@@ -151,6 +164,13 @@ public class ProjecteLoteria {
         }
     }
 
+    /**
+     * Menu de text per la colla
+     *
+     * @param frase
+     * @return
+     * @throws IOException
+     */
     public static int mostrarMenuColla(String frase) throws IOException {
         traduccion multiIdioma = new traduccion(frase);
         int opcion;
@@ -164,6 +184,14 @@ public class ProjecteLoteria {
         return opcion;
     }
 
+    /**
+     * Menu sortida de la colla
+     *
+     * @param exit
+     * @param frase
+     * @return
+     * @throws IOException
+     */
     public static boolean menuSortida(boolean exit, String frase) throws IOException {
         traduccion multiIdioma = new traduccion(frase);
         int menuSortida;
@@ -178,6 +206,18 @@ public class ProjecteLoteria {
         return exit;
     }
 
+    /**
+     * Validacio del premi total aconseguit
+     *
+     * @param premiAconseguit
+     * @param posicio
+     * @param BoletoInput
+     * @param premiAddicional
+     * @param ArrayPremiAdicional
+     * @param frase
+     * @return
+     * @throws IOException
+     */
     public static boolean menuPremiAconseguit(int premiAconseguit, int posicio, int BoletoInput, int premiAddicional, int[] ArrayPremiAdicional, String frase) throws IOException {
         boolean sortir = false;
         if (premiAconseguit >= 0) {
@@ -203,6 +243,13 @@ public class ProjecteLoteria {
         return sortir;
     }
 
+    /**
+     * Text en cas de bolet premiat
+     *
+     * @param frase
+     * @return
+     * @throws IOException
+     */
     public static int textBoletPremiat(String frase) throws IOException {
         traduccion multiIdioma = new traduccion(frase);
         System.out.println(ANSI_GREEN + multiIdioma.getString("textBoletPremiat") + " " + RESET);
@@ -214,6 +261,12 @@ public class ProjecteLoteria {
         return premi;
     }
 
+    /**
+     * Text per els bolets amb aproximacions
+     *
+     * @param frase
+     * @throws IOException
+     */
     public static void textMenuAproximacions(String frase) throws IOException {
         traduccion multiIdioma = new traduccion(frase);
         System.out.println(ANSI_GREEN + multiIdioma.getString("textMenuAproximacions1") + " " + RESET);
@@ -224,6 +277,11 @@ public class ProjecteLoteria {
 
     // </editor-fold>
 // <editor-fold defaultstate="collapsed" desc="Idioma">
+    /**
+     * Text menu idioma
+     *
+     * @return
+     */
     public static String menuIdioma() {
         System.out.println("En quin idioma vols executar el programa, escriu la abreviatura?");
         System.out.println("ca=Catala");
@@ -233,6 +291,11 @@ public class ProjecteLoteria {
 
     }
 
+    /**
+     * Validar opcio "ca" o "es"
+     *
+     * @return
+     */
     public static String idiomaValido() {
         String idioma = "";
         while (!idioma.equals("ca") && !idioma.equals("es")) {
@@ -247,11 +310,22 @@ public class ProjecteLoteria {
 
         private Properties properties;
 
+        /**
+         *
+         * @param idioma
+         * @throws FileNotFoundException
+         * @throws IOException
+         */
         public traduccion(String idioma) throws FileNotFoundException, IOException {
             properties = new Properties();
             properties.load(new FileInputStream(idioma + ".txt"));
         }
 
+        /**
+         *
+         * @param key
+         * @return
+         */
         public String getString(String key) {
             return properties.getProperty(key);
         }
@@ -651,7 +725,7 @@ public class ProjecteLoteria {
 
 // <editor-fold defaultstate="collapsed" desc="Sorteig Any existent">    
     /**
-     * Convierte un array de enteros en una cadena de texto
+     * Converteix un array de bolets premiats a string
      *
      * @param boleto
      * @return
@@ -665,7 +739,7 @@ public class ProjecteLoteria {
     }
 
     /**
-     * Abre un nuevo fichero para el año pedido, para los boletos
+     * Obre un nou fitxer per a l'any demanat, per a guardar els boletos
      *
      * @param nomFichero
      * @param crear
@@ -699,7 +773,7 @@ public class ProjecteLoteria {
     }
 
     /**
-     * Cierra un fichero cuando es necesario
+     * Tanca un fitxer
      *
      * @param dos
      */
@@ -712,8 +786,8 @@ public class ProjecteLoteria {
     }
 
     /**
-     * Escribe en el fichero,si no existe el fichero del año crea el nombre del
-     * fichero (año) y su contenido
+     * Escriu en el fitxer,si no existeix el fitxer de l'any crea el nom del
+     * fitxer (any) i el seu contingut
      *
      * @param text
      * @param any
@@ -733,8 +807,8 @@ public class ProjecteLoteria {
     }
 
     /**
-     * Devuelve los boletos del fichero del año pedido, i utiliza una funcion
-     * para llenar la array con los boletos
+     * Retorna els boletos del fitxer de l'any demanat, i utilitza una funcio
+     * per a omplir la array amb els bitllets
      *
      * @param File
      * @param numeros
@@ -747,8 +821,8 @@ public class ProjecteLoteria {
     }
 
     /**
-     * Si no existe el año pedido se crea un nuevo fichero del "año" con el
-     * sorteo.
+     * Si no existeix l'any demanat es crea un nou fitxer del "any" amb el
+     * sorteig.
      *
      * @param nomFitxer
      * @param text
@@ -757,7 +831,6 @@ public class ProjecteLoteria {
      * @throws NumberFormatException
      */
     public static int[] crearNuevoArxivo(String nomFitxer, String text, int[] numeros) throws NumberFormatException {
-        // Si el archivo no existe, creamos uno nuevo y escribimos el sorteo
         DataOutputStream dos = abrirFicheroEscritura(nomFitxer, true);
         if (dos != null) {
             try {
@@ -776,7 +849,7 @@ public class ProjecteLoteria {
     }
 
     /**
-     * Lee el fichero para ver si el fichero del anyo existe
+     * Llegeix el fitxer per veure si el fitxer d'aquell any existeix
      *
      * @param any
      * @return
@@ -789,7 +862,7 @@ public class ProjecteLoteria {
         if (File.exists()) {
             numeros = llenarArrayBoletosFichero(File, numeros);
         } else {
-            // Si el archivo no existe, devolvemos un array vacío
+            // Si el fitxer no existeix retornem un array buit.
             numeros = new int[0];
         }
 
@@ -797,7 +870,7 @@ public class ProjecteLoteria {
     }
 
     /**
-     * Llena un array con los boletos del sorteo de ese año
+     * Omple un array amb els boletos del sorteix de aquell any
      *
      * @param File
      * @param numeros
@@ -830,17 +903,14 @@ public class ProjecteLoteria {
     }
 
 // </editor-fold>
-  
-    
-    
 // <editor-fold defaultstate="collapsed" desc="Colles">
     /**
-     * Funcion que abre un fichero y, opcionalmente, lo crea si no existe
+     * Funcio que obra un fitxer o el crea si no existeix
      *
-     * @param nomFichero Nombre del fichero a abrir
-     * @param crear Si lo que queremos crear en el caso que no exista
-     * @return File con el fichero que se ha abierto o null si no existe o no se
-     * ha podido crear
+     * @param nomFichero Nom del fitxer a obrir
+     * @param crear
+     * @return File amb el fitxer que s'ha obert o null si no existeix o no es
+     * ha pogut crear
      */
     
     public static DataOutputStream AbrirFicheroEscrituraSorteigBinario(String nomFichero, boolean crear, boolean blnAnyadir) {
@@ -870,7 +940,7 @@ public class ProjecteLoteria {
 
         return dos;
     }
-    
+
     public static File AbrirFicheroSorteig(String nomFichero, boolean crear) {
         File result = null;
 
