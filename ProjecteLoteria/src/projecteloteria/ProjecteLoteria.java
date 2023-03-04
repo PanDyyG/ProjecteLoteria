@@ -59,25 +59,16 @@ public class ProjecteLoteria {
     public static String idioma = menuIdioma();
 
     public static void main(String[] args) throws IOException {
-        traduccion multiIdioma = new traduccion(idioma);
+
         int[] NumerosPremiados = ArrayPremiats();
 
         boolean exit = false; //MAIN MENU
         while (!exit) {
             int opciones = menuOpcions(idioma);
             switch (opciones) { //CONSULTAR NUMERO
-                case 1: {   //Inicialitzacio funcions
-                    System.out.println(multiIdioma.getString("year1"));
-                    any = scan.next();
-                    int[] numerosExistentes = leerFichero(any);
-                    if (numerosExistentes.length == 0) {
-                        NumerosPremiados = ArrayPremiats();
-                        String sorteig = sorteigString(NumerosPremiados);
-                        escribirFichero(sorteig, any);
-                    } else {
-                        System.out.println(multiIdioma.getString("year2"));
-                        NumerosPremiados = numerosExistentes;
-                    }
+                case 1: {
+                            //Inicialitzacio funcions
+                    NumerosPremiados = comprovaAnyExistent(idioma);
                     int BoletoInput = validarNumeroLoteria(idioma);
                     int posicio = ValidarNumero(NumerosPremiados, BoletoInput);
                     int reintegro = Reintegro(BoletoInput, NumerosPremiados);
@@ -106,6 +97,7 @@ public class ProjecteLoteria {
         }
     }
 
+   
 // <editor-fold defaultstate="collapsed" desc="Menus">
     public static int menuOpcions(String frase) throws IOException {
         traduccion multiIdioma = new traduccion(frase);
@@ -118,6 +110,29 @@ public class ProjecteLoteria {
         return opciones;
     }
 
+    /**
+     * Inicialitza la comprovacio per si existeix un fitxer amb el any demanat
+     * @param frase
+     * @return
+     * @throws IOException 
+     */
+    public static int[] comprovaAnyExistent(String frase) throws IOException {
+        int[] NumerosPremiados;
+        traduccion multiIdioma = new traduccion(frase);
+        System.out.println(multiIdioma.getString("year1"));
+        any = scan.next();
+        int[] numerosExistentes = leerFichero(any);
+        if (numerosExistentes.length == 0) {
+            NumerosPremiados = ArrayPremiats();
+            String sorteig = sorteigString(NumerosPremiados);
+            escribirFichero(sorteig, any);
+        } else {
+            System.out.println(multiIdioma.getString("year2"));
+            NumerosPremiados = numerosExistentes;
+        }
+        return NumerosPremiados;
+    }
+    
     public static void opcionsColla(String frase) throws IOException {
         int opcion = mostrarMenuColla(frase);
         while (opcion != 0) {
@@ -154,8 +169,8 @@ public class ProjecteLoteria {
         int menuSortida;
         System.out.println();
         System.out.println(multiIdioma.getString("menuSortida1"));
-        System.out.println(multiIdioma.getString("menuSortida2"));
-        System.out.println(multiIdioma.getString("menuSortida3"));
+        System.out.println("menuSortida2");
+        System.out.println("menuSortida3");
         menuSortida = validarNumeroEnter(frase);
         if (menuSortida == 2) {
             exit = true;
@@ -193,7 +208,7 @@ public class ProjecteLoteria {
         System.out.println(ANSI_GREEN + multiIdioma.getString("textBoletPremiat") + " " + RESET);
         System.out.println(multiIdioma.getString("textMenuAproximacions2"));
         System.out.println(multiIdioma.getString("menuSortida2"));
-        System.out.println(multiIdioma.getString("menuSortida3"));
+        System.out.println(multiIdioma.getString("menuSortida2"));
         //Variable per elegir el cas del següent switch
         int premi = validarNumeroEnter(frase);
         return premi;
@@ -634,7 +649,7 @@ public class ProjecteLoteria {
 
     }// </editor-fold>
 
-// <editor-fold defaultstate="collapsed" desc="Exercici1">    
+// <editor-fold defaultstate="collapsed" desc="Sorteig Any existent">    
     /**
      * Convierte un array de enteros en una cadena de texto
      *
@@ -650,7 +665,7 @@ public class ProjecteLoteria {
     }
 
     /**
-     * Abre un fichero para escritura
+     * Abre un nuevo fichero para el año pedido, para los boletos
      *
      * @param nomFichero
      * @param crear
@@ -680,7 +695,6 @@ public class ProjecteLoteria {
                 Logger.getLogger(ProjecteLoteria.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
         return dos;
     }
 
@@ -698,18 +712,19 @@ public class ProjecteLoteria {
     }
 
     /**
-     * Escribe en el fichero, el nombre del fichero y su contenido
+     * Escribe en el fichero,si no existe el fichero del año crea el nombre del
+     * fichero (año) y su contenido
      *
      * @param text
      * @param any
      */
     public static int[] escribirFichero(String text, String any) {
         String nomFitxer = RUTA + any + EXTENSIO;
-        File f = new File(nomFitxer);
+        File File = new File(nomFitxer);
         int[] numeros = null;
 
-        if (f.exists()) {
-            numeros = abrirArchivoSiExiste(f, numeros);
+        if (File.exists()) {
+            numeros = abrirArchivoSiExiste(File, numeros);
         } else {
             numeros = crearNuevoArxivo(nomFitxer, text, numeros);
         }
@@ -717,11 +732,30 @@ public class ProjecteLoteria {
         return numeros;
     }
 
-    public static int[] abrirArchivoSiExiste(File f, int[] numeros) throws NumberFormatException {
-        numeros = llenarArrayBoletosFichero(f, numeros);
+    /**
+     * Devuelve los boletos del fichero del año pedido, i utiliza una funcion
+     * para llenar la array con los boletos
+     *
+     * @param File
+     * @param numeros
+     * @return
+     * @throws NumberFormatException
+     */
+    public static int[] abrirArchivoSiExiste(File File, int[] numeros) throws NumberFormatException {
+        numeros = llenarArrayBoletosFichero(File, numeros);
         return numeros;
     }
 
+    /**
+     * Si no existe el año pedido se crea un nuevo fichero del "año" con el
+     * sorteo.
+     *
+     * @param nomFitxer
+     * @param text
+     * @param numeros
+     * @return
+     * @throws NumberFormatException
+     */
     public static int[] crearNuevoArxivo(String nomFitxer, String text, int[] numeros) throws NumberFormatException {
         // Si el archivo no existe, creamos uno nuevo y escribimos el sorteo
         DataOutputStream dos = abrirFicheroEscritura(nomFitxer, true);
@@ -741,6 +775,12 @@ public class ProjecteLoteria {
         return numeros;
     }
 
+    /**
+     * Lee el fichero para ver si el fichero del anyo existe
+     *
+     * @param any
+     * @return
+     */
     public static int[] leerFichero(String any) {
         String nomFitxer = RUTA + any + EXTENSIO;
         File File = new File(nomFitxer);
@@ -756,6 +796,14 @@ public class ProjecteLoteria {
         return numeros;
     }
 
+    /**
+     * Llena un array con los boletos del sorteo de ese año
+     *
+     * @param File
+     * @param numeros
+     * @return
+     * @throws NumberFormatException
+     */
     public static int[] llenarArrayBoletosFichero(File File, int[] numeros) throws NumberFormatException {
         try {
             BufferedReader br = new BufferedReader(new FileReader(File));
@@ -782,7 +830,19 @@ public class ProjecteLoteria {
     }
 
 // </editor-fold>
-// <editor-fold defaultstate="collapsed" desc="Guardar Sorteig en Binari">
+  
+    
+    
+// <editor-fold defaultstate="collapsed" desc="Colles">
+    /**
+     * Funcion que abre un fichero y, opcionalmente, lo crea si no existe
+     *
+     * @param nomFichero Nombre del fichero a abrir
+     * @param crear Si lo que queremos crear en el caso que no exista
+     * @return File con el fichero que se ha abierto o null si no existe o no se
+     * ha podido crear
+     */
+    
     public static DataOutputStream AbrirFicheroEscrituraSorteigBinario(String nomFichero, boolean crear, boolean blnAnyadir) {
         DataOutputStream dos = null;
         File file = new File(nomFichero);
@@ -810,17 +870,7 @@ public class ProjecteLoteria {
 
         return dos;
     }
-
-// </editor-fold>     
-// <editor-fold defaultstate="collapsed" desc="Binari">
-    /**
-     * Funcion que abre un fichero y, opcionalmente, lo crea si no existe
-     *
-     * @param nomFichero Nombre del fichero a abrir
-     * @param crear Si lo que queremos crear en el caso que no exista
-     * @return File con el fichero que se ha abierto o null si no existe o no se
-     * ha podido crear
-     */
+    
     public static File AbrirFicheroSorteig(String nomFichero, boolean crear) {
         File result = null;
 
@@ -883,10 +933,10 @@ public class ProjecteLoteria {
 
     public static void llegirDades(Cliente c, String frase) throws IOException {
         traduccion multiIdioma = new traduccion(frase);
-        System.out.println(multiIdioma.getString("llegirDades1") + "  " + c.codi);
-        System.out.println(multiIdioma.getString("llegirDades2") + "  " + c.nom);
-        System.out.println(multiIdioma.getString("llegirDades3") + "  " + c.boleto);
-        System.out.println(multiIdioma.getString("llegirDades4") + "  " + c.diners);
+        System.out.println(multiIdioma.getString("llegirDades1") + " " + c.codi);
+        System.out.println(multiIdioma.getString("llegirDades2") + " " + c.nom);
+        System.out.println(multiIdioma.getString("llegirDades3") + " " + c.boleto);
+        System.out.println(multiIdioma.getString("llegirDades4") + " " + c.diners);
     }
 
     public static void GrabarClientesBinario(String frase) throws IOException {
