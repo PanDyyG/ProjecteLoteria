@@ -59,7 +59,7 @@ public class ProjecteLoteria {
     public static String idioma = menuIdioma();
 
     public static void main(String[] args) throws IOException {
-
+        traduccion multiIdioma = new traduccion(idioma);
         int[] NumerosPremiados = ArrayPremiats();
 
         boolean exit = false; //MAIN MENU
@@ -67,7 +67,7 @@ public class ProjecteLoteria {
             int opciones = menuOpcions(idioma);
             switch (opciones) { //CONSULTAR NUMERO
                 case 1: {   //Inicialitzacio funcions
-                    System.out.println("Introdueix l'any del sorteig");
+                    System.out.println(multiIdioma.getString("year1"));
                     any = scan.next();
                     int[] numerosExistentes = leerFichero(any);
                     if (numerosExistentes.length == 0) {
@@ -75,7 +75,7 @@ public class ProjecteLoteria {
                         String sorteig = sorteigString(NumerosPremiados);
                         escribirFichero(sorteig, any);
                     } else {
-                        System.out.println("Ja existeix un sorteig per aquest any.");
+                        System.out.println(multiIdioma.getString("year2"));
                         NumerosPremiados = numerosExistentes;
                     }
                     int BoletoInput = validarNumeroLoteria(idioma);
@@ -129,7 +129,7 @@ public class ProjecteLoteria {
                     LeerClientesBinario(frase);
                     break;
                 case 3:
-                    LeerInformacioColla(any,frase);
+                    LeerInformacioColla(any, frase);
                     break;
             }
             opcion = mostrarMenuColla(frase);
@@ -154,8 +154,8 @@ public class ProjecteLoteria {
         int menuSortida;
         System.out.println();
         System.out.println(multiIdioma.getString("menuSortida1"));
-        System.out.println("menuSortida2");
-        System.out.println("menuSortida3");
+        System.out.println(multiIdioma.getString("menuSortida2"));
+        System.out.println(multiIdioma.getString("menuSortida3"));
         menuSortida = validarNumeroEnter(frase);
         if (menuSortida == 2) {
             exit = true;
@@ -193,7 +193,7 @@ public class ProjecteLoteria {
         System.out.println(ANSI_GREEN + multiIdioma.getString("textBoletPremiat") + " " + RESET);
         System.out.println(multiIdioma.getString("textMenuAproximacions2"));
         System.out.println(multiIdioma.getString("menuSortida2"));
-        System.out.println(multiIdioma.getString("menuSortida2"));
+        System.out.println(multiIdioma.getString("menuSortida3"));
         //Variable per elegir el cas del següent switch
         int premi = validarNumeroEnter(frase);
         return premi;
@@ -849,17 +849,17 @@ public class ProjecteLoteria {
     public static Cliente PedirDatosCliente(String frase) throws IOException {
         traduccion multiIdioma = new traduccion(frase);
         Cliente c = new Cliente();
-        System.out.print(multiIdioma.getString("validarDinersFicats")+" ");
+        System.out.print(multiIdioma.getString("llegirDades1") + " ");
         c.codi = scan.nextInt();
         scan.nextLine();
         if (c.codi != 0) {
-            System.out.print(multiIdioma.getString("validarDinersFicats")+" ");
+            System.out.print(multiIdioma.getString("llegirDades2") + " ");
             c.nom = scan.nextLine();
-            System.out.print(multiIdioma.getString("validarDinersFicats")+" ");
+            System.out.print(multiIdioma.getString("llegirDades3") + " ");
             c.boleto = scan.nextInt();
-            System.out.print(multiIdioma.getString("validarDinersFicats")+" ");
+            System.out.print(multiIdioma.getString("llegirDades4") + " ");
             c.diners = validarDinersFicats(frase);
-            System.out.println(multiIdioma.getString("validarDinersFicats")+" ");
+            System.out.println(multiIdioma.getString("PedirDatosCliente") + " ");
         } else {
             c = null;
         }
@@ -872,10 +872,10 @@ public class ProjecteLoteria {
      * @return
      */
     public static double validarDinersFicats(String frase) throws IOException {
-    traduccion multiIdioma = new traduccion(frase);
+        traduccion multiIdioma = new traduccion(frase);
         Double valor = scan.nextDouble();
         while (!scan.hasNextInt() || valor > 60 || valor % 5 != 0) {
-            System.out.print(multiIdioma.getString("validarDinersFicats")+" ");
+            System.out.print(multiIdioma.getString("validarDinersFicats") + " ");
             valor = scan.nextDouble();
         }
         return valor;
@@ -883,10 +883,10 @@ public class ProjecteLoteria {
 
     public static void llegirDades(Cliente c, String frase) throws IOException {
         traduccion multiIdioma = new traduccion(frase);
-        System.out.println(multiIdioma.getString("llegirDades1")+" " + c.codi);
-        System.out.println(multiIdioma.getString("llegirDades2")+" " + c.nom);
-        System.out.println(multiIdioma.getString("llegirDades3")+" " + c.boleto);
-        System.out.println(multiIdioma.getString("llegirDades4")+" " + c.diners);
+        System.out.println(multiIdioma.getString("llegirDades1") + "  " + c.codi);
+        System.out.println(multiIdioma.getString("llegirDades2") + "  " + c.nom);
+        System.out.println(multiIdioma.getString("llegirDades3") + "  " + c.boleto);
+        System.out.println(multiIdioma.getString("llegirDades4") + "  " + c.diners);
     }
 
     public static void GrabarClientesBinario(String frase) throws IOException {
