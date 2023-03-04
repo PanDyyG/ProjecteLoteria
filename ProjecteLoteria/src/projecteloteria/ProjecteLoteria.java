@@ -276,6 +276,7 @@ public class ProjecteLoteria {
     }
 
     // </editor-fold>
+    
 // <editor-fold defaultstate="collapsed" desc="Idioma">
     /**
      * Text menu idioma
@@ -903,6 +904,7 @@ public class ProjecteLoteria {
     }
 
 // </editor-fold>
+    
 // <editor-fold defaultstate="collapsed" desc="Colles">
     /**
      * Funcio que obra un fitxer o el crea si no existeix
@@ -912,7 +914,6 @@ public class ProjecteLoteria {
      * @return File amb el fitxer que s'ha obert o null si no existeix o no es
      * ha pogut crear
      */
-    
     public static DataOutputStream AbrirFicheroEscrituraSorteigBinario(String nomFichero, boolean crear, boolean blnAnyadir) {
         DataOutputStream dos = null;
         File file = new File(nomFichero);
@@ -962,10 +963,20 @@ public class ProjecteLoteria {
         return result;
     }
 
+    /**
+     * Funció per demanar una linia de text per teclat
+     * @return 
+     */
     public static String PedirLineaTeclado() {
         return scan.nextLine();
     }
-
+    
+    /**
+     * Funció per demanar les dades de cada client de la colla
+     * @param frase
+     * @return
+     * @throws IOException 
+     */
     public static Cliente PedirDatosCliente(String frase) throws IOException {
         traduccion multiIdioma = new traduccion(frase);
         Cliente c = new Cliente();
@@ -987,9 +998,10 @@ public class ProjecteLoteria {
     }
 
     /**
-     *
+     * Validar els diners introdüits.
      * @param frase
-     * @return
+     * @return Retorna el valor correcta
+     * @throws IOException 
      */
     public static double validarDinersFicats(String frase) throws IOException {
         traduccion multiIdioma = new traduccion(frase);
@@ -1000,7 +1012,13 @@ public class ProjecteLoteria {
         }
         return valor;
     }
-
+    
+    /**
+     * Mostra per pantalla les dades de cada client.
+     * @param c
+     * @param frase
+     * @throws IOException 
+     */
     public static void llegirDades(Cliente c, String frase) throws IOException {
         traduccion multiIdioma = new traduccion(frase);
         System.out.println(multiIdioma.getString("llegirDades1") + " " + c.codi);
@@ -1008,7 +1026,12 @@ public class ProjecteLoteria {
         System.out.println(multiIdioma.getString("llegirDades3") + " " + c.boleto);
         System.out.println(multiIdioma.getString("llegirDades4") + " " + c.diners);
     }
-
+    
+    /**
+     * Guarda les dades introdüides anteriorment.
+     * @param frase
+     * @throws IOException 
+     */
     public static void GrabarClientesBinario(String frase) throws IOException {
         DataOutputStream dos = AbrirFicheroEscrituraSorteigBinario(NOM_FTX_CLIENTS_BIN, true, true);
 
@@ -1021,7 +1044,11 @@ public class ProjecteLoteria {
         CerrarFicheroBinario(dos);
 
     }
-
+    
+    /**
+     * Tanca correctament el fitxer binari.
+     * @param dos 
+     */
     public static void CerrarFicheroBinario(DataOutputStream dos) {
         try {
             try (dos) {
@@ -1031,7 +1058,11 @@ public class ProjecteLoteria {
             Logger.getLogger(ProjecteLoteria.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    /**
+     * Tanca correctament el fitxer binari.
+     * @param dis 
+     */
     public static void CerrarFicheroBinario(DataInputStream dis) {
         try {
             dis.close();
@@ -1039,7 +1070,12 @@ public class ProjecteLoteria {
             Logger.getLogger(ProjecteLoteria.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    /**
+     * Esciure en el fitxer binari les dades introdüides.
+     * @param dos
+     * @param cli 
+     */
     public static void GrabarDatosClienteBinario(DataOutputStream dos, Cliente cli) {
         try {
             dos.writeInt(cli.codi);
@@ -1051,7 +1087,12 @@ public class ProjecteLoteria {
         }
 
     }
-
+    
+    /**
+     * Llegeix les dades del client.
+     * @param frase
+     * @throws IOException 
+     */
     public static void LeerClientesBinario(String frase) throws IOException {
         DataInputStream dis = AbrirFicheroLecturaBinario(NOM_FTX_CLIENTS_BIN, true);
 
@@ -1063,7 +1104,13 @@ public class ProjecteLoteria {
 
         CerrarFicheroBinario(dis);
     }
-
+    
+    /**
+     * Llegeix les dades de tota la colla junta.
+     * @param any
+     * @param frase
+     * @throws IOException 
+     */
     public static void LeerInformacioColla(String any, String frase) throws IOException {
         traduccion multiIdioma = new traduccion(frase);
         DataInputStream dis = AbrirFicheroLecturaBinario(NOM_FTX_CLIENTS_BIN, true);
@@ -1080,7 +1127,13 @@ public class ProjecteLoteria {
         System.out.println(multiIdioma.getString("LeerInformacioColla1") + " " + any + multiIdioma.getString("LeerInformacioColla2") + " " + contarClients + multiIdioma.getString("LeerInformacioColla3") + " " + contarDiners + multiIdioma.getString("LeerInformacioColla4") + " " + contarPremi);
         CerrarFicheroBinario(dis);
     }
-
+    
+    /**
+     * Obra el fitxer per llegir el binari.
+     * @param nomFichero
+     * @param crear
+     * @return 
+     */
     public static DataInputStream AbrirFicheroLecturaBinario(String nomFichero, boolean crear) {
         DataInputStream dis = null;
         File f = abrirFichero(nomFichero, crear);
@@ -1098,7 +1151,13 @@ public class ProjecteLoteria {
         }
         return dis;
     }
-
+    
+    /**
+     * Obra el fitxer binari.
+     * @param nomFichero
+     * @param crear
+     * @return 
+     */
     public static File abrirFichero(String nomFichero, boolean crear) {
         File result = new File(nomFichero);
         if (!result.exists()) {
@@ -1115,7 +1174,12 @@ public class ProjecteLoteria {
         }
         return result;
     }
-
+    
+    /**
+     * Llegeix els clients en el fitxer binari.
+     * @param dis
+     * @return 
+     */
     public static Cliente LeerDatosClienteBinario(DataInputStream dis) {
         Cliente cli = new Cliente();
 
